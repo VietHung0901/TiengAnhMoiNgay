@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" th:lang="${#locale.language}">
+<head>
+    <meta charset="UTF-8">
+    <title>Multi-language Website</title>
+</head>
+<body>
+<h1 th:text="#{greeting}"></h1>
+<p th:text="#{welcome}"></p>
+
+<!-- Chọn ngôn ngữ -->
+<a href="?lang=en">English</a> |
+<a href="?lang=vi">Tiếng Việt</a>
+</body>
+</html>
