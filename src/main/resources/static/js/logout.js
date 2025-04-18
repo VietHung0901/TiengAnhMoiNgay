@@ -1,4 +1,5 @@
 document.addEventListener("DOMContentLoaded", function () {
+    const baseUrl = document.getElementById("baseUrl").value;
     const logoutBtn = document.getElementById("btnLogout");
 
     logoutBtn.addEventListener("click", function (e) {

@@ -1,4 +1,5 @@
 document.addEventListener("DOMContentLoaded", function () {
+    const baseUrl = document.getElementById("baseUrl").value;
     const registerForm = document.querySelector("form");
 
     registerForm.addEventListener("submit", function (event) {
