@@ -15,7 +15,8 @@
 
     <!-- Google Fonts -->
     <link href="https://fonts.gstatic.com" rel="preconnect">
-    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i"
+          rel="stylesheet">
 
     <!-- Vendor CSS Files -->
     <link href="/assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
@@ -42,16 +43,8 @@
 
 <main>
     <div class="container">
-        <div class="position-fixed top-0 end-0 p-3" style="z-index: 9999">
-            <div id="toastNotification" class="toast align-items-center text-white border-0" role="alert" aria-live="assertive" aria-atomic="true">
-                <div class="d-flex">
-                    <div id="toastMessage" class="toast-body">
-                        <!-- Nội dung sẽ được JS chèn vào -->
-                    </div>
-                    <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
-                </div>
-            </div>
-        </div>
+        <th:block th:replace="~{partial/notify :: notify}"></th:block>
+
 
         <section class="section register min-vh-100 d-flex flex-column align-items-center justify-content-center py-4">
             <div class="container">
@@ -80,20 +73,23 @@
                                         <label for="yourEmail" class="form-label">Email</label>
                                         <div class="input-group has-validation">
                                             <span class="input-group-text" id="inputGroupPrepend">@</span>
-                                            <input type="text" name="email" class="form-control" id="yourEmail" required>
+                                            <input type="text" name="email" class="form-control" id="yourEmail"
+                                                   required>
                                             <div class="invalid-feedback">Please enter your email.</div>
                                         </div>
                                     </div>
 
                                     <div class="col-12">
                                         <label for="yourPassword" class="form-label">Password</label>
-                                        <input type="password" name="password" class="form-control" id="yourPassword" required>
+                                        <input type="password" name="password" class="form-control" id="yourPassword"
+                                               required>
                                         <div class="invalid-feedback">Please enter your password!</div>
                                     </div>
 
                                     <div class="col-12">
                                         <div class="form-check">
-                                            <input class="form-check-input" type="checkbox" name="remember" value="true" id="rememberMe">
+                                            <input class="form-check-input" type="checkbox" name="remember" value="true"
+                                                   id="rememberMe">
                                             <label class="form-check-label" for="rememberMe">Remember me</label>
                                         </div>
                                     </div>
@@ -101,7 +97,8 @@
                                         <button class="btn btn-primary w-100" type="submit">Login</button>
                                     </div>
                                     <div class="col-12">
-                                        <p class="small mb-0">Don't have account? <a href="/view/auth/register">Create an account</a></p>
+                                        <p class="small mb-0">Don't have account? <a href="/view/auth/register">Create
+                                            an account</a></p>
                                     </div>
                                 </form>
 
@@ -113,7 +110,6 @@
                             <!-- You can delete the links only if you purchased the pro version. -->
                             <!-- Licensing information: https://bootstrapmade.com/license/ -->
                             <!-- Purchase the pro version with working PHP/AJAX contact form: https://bootstrapmade.com/nice-admin-bootstrap-admin-html-template/ -->
-                            Designed by <a href="https://bootstrapmade.com/" target="_blank">BootstrapMade</a>
                         </div>
 
                     </div>
@@ -123,13 +119,13 @@
         </section>
 
     </div>
-    <input type="hidden" id="baseUrl" th:value="${baseUrl}">
 </main><!-- End #main -->
 
-<a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
+<a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i
+        class="bi bi-arrow-up-short"></i></a>
 
 <!-- Script for login -->
-<script th:src="@{/js/login.js}"></script>
+<script th:src="@{/js/auth/login.js}"></script>
 <script th:src="@{/js/notification.js}"></script>
 
 <!-- Vendor JS Files -->

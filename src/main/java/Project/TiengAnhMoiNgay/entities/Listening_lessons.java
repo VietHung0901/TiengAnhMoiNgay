@@ -21,12 +21,13 @@ public class Listening_lessons {
 
     private String title;
 
-    private String youtube_url;
+    private String youtubeUrl;
 
-    private String audio_path;
+    private String audioUrl;
+
+    private String status;
 
     @OneToMany(mappedBy = "lesson", cascade = CascadeType.ALL)
     @ToString.Exclude
-    @JsonManagedReference
     private List<Subtitle_lines> lines;
 }

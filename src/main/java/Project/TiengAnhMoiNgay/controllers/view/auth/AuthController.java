@@ -1,4 +1,4 @@
-package Project.TiengAnhMoiNgay.controllers.view.employee;
+package Project.TiengAnhMoiNgay.controllers.view.auth;
 
 import Project.TiengAnhMoiNgay.model.StringURL;
 import lombok.RequiredArgsConstructor;
@@ -12,17 +12,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequestMapping("/view/auth")
 @RequiredArgsConstructor
 public class AuthController {
-    StringURL url = new StringURL();
 
     @GetMapping("/login")
-    public String login(Model model) {
-        model.addAttribute("baseUrl", url.getHttp());
+    public String login() {
         return "auth/login";
     }
 
     @GetMapping("/register")
     public String register(Model model) {
-        model.addAttribute("baseUrl", url.getHttp());
         return "auth/register";
     }
 }

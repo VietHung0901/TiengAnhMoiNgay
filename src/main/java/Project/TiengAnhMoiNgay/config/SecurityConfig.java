@@ -51,12 +51,12 @@ public class SecurityConfig {
                 .sessionManagement(session -> session
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS) // Không dùng session
                 ).authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/js/**", "/assets/**", "/view/**", "/api/auth/**", "/api/youtube/**")
+                        .requestMatchers("/js/**", "/assets/**", "/view/**", "/api/auth/**", "/subtitles/**")
                         .permitAll()
 
                         //Chỉ những người có vai trò "ADMIN" mới được phép truy cập
-//                        .requestMatchers("/api/youtube/**")
-//                        .hasAnyAuthority("EMPLOYEE", "MANAGER")
+                        .requestMatchers("/api/listening_lesson/**")
+                        .hasAnyAuthority("EMPLOYEE", "MANAGER")
 
                         // Các yêu cầu còn lại yêu cầu xác thực
                         .anyRequest().authenticated()
@@ -67,13 +67,15 @@ public class SecurityConfig {
                         .authenticationEntryPoint((request, response, authException) -> {
                             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
                             response.setContentType("application/json");
-                            response.getWriter().write("{\"error\": \"Unauthorized\", \"message\": \"Bạn cần đăng nhập để truy cập tài nguyên này\"}");
+                            response.setCharacterEncoding("UTF-8");
+                            response.getWriter().write("{\"status\": \"error\", \"message\": \"Bạn cần đăng nhập để truy cập tài nguyên này\"}");
                         })
                         // Xử lý lỗi 403 (Forbidden)
                         .accessDeniedHandler((request, response, accessDeniedException) -> {
                             response.setStatus(HttpServletResponse.SC_FORBIDDEN);
                             response.setContentType("application/json");
-                            response.getWriter().write("{\"error\": \"Forbidden\", \"message\": \"Bạn không có quyền truy cập tài nguyên này\"}");
+                            response.setCharacterEncoding("UTF-8");
+                            response.getWriter().write("{\"status\": \"error\", \"message\": \"Bạn không có quyền truy cập tài nguyên này\"}");
                         })
                 )
                 .build();

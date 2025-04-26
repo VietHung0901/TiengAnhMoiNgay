@@ -1,5 +1,5 @@
 document.addEventListener("DOMContentLoaded", function () {
-    const baseUrl = document.getElementById("baseUrl").value;
+    const baseUrl = window.location.origin; // Lấy domain hiện tại (http://localhost:8080 hoặc domain production)
     const logoutBtn = document.getElementById("btnLogout");
 
     logoutBtn.addEventListener("click", function (e) {

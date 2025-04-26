@@ -58,8 +58,7 @@
                     </div>
                 </div>
 
-                <section
-                        class="section register min-vh-100 d-flex flex-column align-items-center justify-content-center py-4">
+                <section class="section register min-vh-100 d-flex flex-column align-items-center justify-content-center py-4">
                     <div class="container">
                         <div class="row justify-content-center">
                             <div class="col-lg-4 col-md-6 d-flex flex-column align-items-center justify-content-center">
@@ -102,7 +101,7 @@
                                                 <label for="yourPhone" class="form-label">Your Phone</label>
                                                 <input type="text" name="phone" class="form-control" id="yourPhone"
                                                        required>
-                                                <div class="invalid-feedback">Enter your name!</div>
+                                                <div class="invalid-feedback">Enter your phone!</div>
                                             </div>
 
                                             <div class="col-12">
@@ -160,9 +159,7 @@
                                     <!-- You can delete the links only if you purchased the pro version. -->
                                     <!-- Licensing information: https://bootstrapmade.com/license/ -->
                                     <!-- Purchase the pro version with working PHP/AJAX contact form: https://bootstrapmade.com/nice-admin-bootstrap-admin-html-template/ -->
-                                    Designed by <a href="https://bootstrapmade.com/" target="_blank" >BootstrapMade</a>
                                 </div>
-
                             </div>
                         </div>
                     </div>
@@ -172,14 +169,13 @@
             </div>
         </div>
     </div>
-    <input type="hidden" id="baseUrl" th:value="${baseUrl}">
 </main><!-- End #main -->
 
 <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i
         class="bi bi-arrow-up-short"></i></a>
 
 <!-- Script for Register -->
-<script th:src="@{/js/register.js}"></script>
+<script th:src="@{/js/auth/register.js}"></script>
 <script th:src="@{/js/notification.js}"></script>
 
 <!-- Vendor JS Files -->

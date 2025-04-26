@@ -12,7 +12,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
@@ -31,7 +30,7 @@ public class ApiAuthController {
     private PasswordEncoder passwordEncoder;
 
     @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestBody UserLogin userLogin) {
+    public ResponseEntity<?> login(@RequestBody @Valid UserLogin userLogin) {
         try {
             // Kiểm tra tên người dùng
             User user = userService.findByUsername(userLogin.getUsername());
@@ -73,10 +72,7 @@ public class ApiAuthController {
     @PostMapping("/logout")
     public ResponseEntity<?> logout() {
         try {
-            return ResponseEntity.ok(Map.of(
-                    "status", "success",
-                    "message", "Đăng xuất thành công"
-            ));
+            return ResponseEntity.ok(Map.of("status", "success", "message", "Đăng xuất thành công"));
         } catch (Exception e) {
             // Xử lý lỗi và trả về phản hồi thất bại
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Map.of("status", "error", "message", e.getMessage()));

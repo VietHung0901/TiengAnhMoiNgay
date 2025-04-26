@@ -1,6 +1,7 @@
 package Project.TiengAnhMoiNgay.entities;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -19,11 +20,12 @@ public class Subtitle_lines {
 
     private String startTime;
     private String endTime;
+
     private String content;
 
     // Mối quan hệ ManyToOne với Listening_lessons
     @ManyToOne
     @JoinColumn(name = "lesson_id") // Tạo khóa ngoại
-    @JsonBackReference // Ngăn không cho vòng lặp trong JSON
+    @JsonIgnore
     private Listening_lessons lesson;
 }

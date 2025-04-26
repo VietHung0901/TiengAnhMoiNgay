@@ -1,0 +1,88 @@
+1
+00:00:00,000 --> 00:00:02,000
+English together
+
+2
+00:00:04,000 --> 00:00:06,000
+Questions and Answers
+
+3
+00:00:13,000 --> 00:00:15,000
+Are you married?
+
+4
+00:00:15,000 --> 00:00:22,000
+No, I'm not. I'm still single. How about you?
+
+5
+00:00:22,000 --> 00:00:27,000
+I'm single, too. Do you have any siblings?
+
+6
+00:00:28,000 --> 00:00:35,000
+Yes, I have one brother and one sister. What about you?
+
+7
+00:00:35,000 --> 00:00:40,000
+I have two sisters. They keep me busy.
+
+8
+00:00:40,000 --> 00:00:43,000
+What do you like to do in your free time?
+
+9
+00:00:43,000 --> 00:00:48,000
+I love painting and going for walks in the park.
+
+10
+00:00:48,000 --> 00:00:51,000
+How about you?
+
+11
+00:00:51,000 --> 00:00:57,000
+That sounds nice. I really enjoy reading and watching movies.
+
+12
+00:00:57,000 --> 00:01:01,000
+Do you have a car?
+
+13
+00:01:01,000 --> 00:01:10,000
+No, I don't. I usually ride my bike or take the bus. It's easier for me.
+
+14
+00:01:10,000 --> 00:01:16,000
+That makes sense. Do you have any big dreams for the future?
+
+15
+00:01:16,000 --> 00:01:24,000
+Hmm, I'd love to travel more and see different countries. How about you?
+
+16
+00:01:25,000 --> 00:01:33,000
+I want to open a small coffee shop one day. I love making coffee.
+
+17
+00:01:33,000 --> 00:01:39,000
+That sounds amazing. What kind of music do you like?
+
+18
+00:01:39,000 --> 00:01:47,000
+I enjoy pop music, especially artists like Taylor Swift. What about you?
+
+19
+00:01:47,000 --> 00:01:53,000
+I like her, too. I also enjoy listening to Bruno Mars.
+
+20
+00:01:53,000 --> 00:01:59,000
+Great choice! Maybe we can go to a concert together someday.
+
+21
+00:01:59,000 --> 00:02:01,000
+I'd like that.
+
+22
+00:02:01,000 --> 00:02:23,000
+Thanks for watching. If you enjoyed this video, please give it a like and consider subscribing to my channel for more content like this.
+

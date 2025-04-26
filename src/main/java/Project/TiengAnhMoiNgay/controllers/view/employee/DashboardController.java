@@ -11,11 +11,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequestMapping("/view/admin")
 @RequiredArgsConstructor
 public class DashboardController {
-    StringURL url = new StringURL();
 
     @GetMapping("/dashboard")
-    public String dashboard(Model model) {
-        model.addAttribute("baseUrl", url.getHttp());
+    public String dashboard() {
         return "employee/dashboard";
     }
 }
