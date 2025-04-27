@@ -51,12 +51,12 @@ public class SecurityConfig {
                 .sessionManagement(session -> session
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS) // Không dùng session
                 ).authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/js/**", "/assets/**", "/view/**", "/api/auth/**", "/subtitles/**")
+                        .requestMatchers("/js/**", "/assets/**", "/view/**", "/api/auth/**", "/subtitles/**", "/api/listening_lesson/**")
                         .permitAll()
 
                         //Chỉ những người có vai trò "ADMIN" mới được phép truy cập
-                        .requestMatchers("/api/listening_lesson/**")
-                        .hasAnyAuthority("EMPLOYEE", "MANAGER")
+//                        .requestMatchers()
+//                        .hasAnyAuthority("EMPLOYEE", "MANAGER")
 
                         // Các yêu cầu còn lại yêu cầu xác thực
                         .anyRequest().authenticated()

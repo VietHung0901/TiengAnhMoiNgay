@@ -62,14 +62,14 @@ public class YoutubeSubtitleService {
         return audioPath;
     }
 
-    public File generateSRTWithWhisper(String videoId, String outputDir, String audioFile) throws IOException, InterruptedException {
+    public File generateSRTWithWhisper(String videoId, String outputDir, String audioPath) throws IOException, InterruptedException {
         String pythonPath = dir.getDirTools_whisper();
         // Câu lệnh gọi whisper bằng Python
         List<String> command = new ArrayList<>();
         command.add(pythonPath);
         command.add("-m");
         command.add("whisper");
-        command.add(audioFile);
+        command.add(audioPath);
         command.add("--model");
         command.add("medium");
         command.add("--output_format");
@@ -154,37 +154,32 @@ public class YoutubeSubtitleService {
         return lines;
     }
 
-    // Hàm này đang chưa chính xác -----------------------------------
-//    public File downloadSubtitle(String youtubeUrl, String outputDir) throws IOException, InterruptedException {
-//        String ytDlpPath = dir.getDirTools_ytdlp(); // Nơi chứa yt-dlp
-//        List<String> command = List.of(
-//                ytDlpPath,
-//                "--write-auto-sub",          // Tải phụ đề được YouTube tự động tạo
-//                "--sub-lang", "en",          // Chọn ngôn ngữ phụ đề: tiếng Anh
-//                "--skip-download",           // Không tải video, chỉ phụ đề
-//                "--convert-subs", "srt",     // Chuyển phụ đề sang định dạng .srt
-//                "-o", outputDir + File.separator + "/%(id)s.%(ext)s",
-//                youtubeUrl
-//        );
-//
-//        ProcessBuilder builder = new ProcessBuilder(command);
-//        builder.redirectErrorStream(true); // Gộp luồng lỗi vào luồng chính
-//        Process process = builder.start(); // Bắt đầu chạy lệnh yt-dlp
-//        int code = process.waitFor();      // Đợi tiến trình kết thúc
-//
-//        if (code != 0) throw new RuntimeException("Tải phụ đề thất bại");
-//
-//        // Lấy video ID từ URL để tìm file
-//        String videoId = extractVideoId(youtubeUrl);
-//        Path filePath = Paths.get(outputDir, videoId + ".en.srt");
-//
-//        File subtitleFile = filePath.toFile();
-//
-//        // 🔥 Kiểm tra file có tồn tại không
-//        if (!subtitleFile.exists()) {
-//            throw new FileNotFoundException("Không tìm thấy file phụ đề. Có thể video không có phụ đề tiếng Anh.");
-//        }
-//
-//        return subtitleFile;
-//    }
+    public String parseSrtFromVoice(File srtFile) throws IOException {
+        StringBuilder lines = new StringBuilder();
+        BufferedReader reader = new BufferedReader(new FileReader(srtFile));
+
+        String line;
+        int contentLineIndex = 0;
+
+        while ((line = reader.readLine()) != null) {
+
+            // Nếu là số
+            if (line.matches("\\d+") && contentLineIndex == 0) {
+                contentLineIndex = 1;
+            } else {
+                contentLineIndex++;
+            }
+            if (contentLineIndex == 3) {
+                // Nếu dòng text[2] != null sẽ lưu nội dung
+                if (!line.trim().isEmpty()) {
+                    lines.append(line);
+                }
+            }
+            if (contentLineIndex == 4) {
+                contentLineIndex = 0;
+            }
+        }
+        reader.close();
+        return lines.toString();
+    }
 }

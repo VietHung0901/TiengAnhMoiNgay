@@ -2,8 +2,7 @@ document.addEventListener("DOMContentLoaded", function() {
     const tabButtons = document.querySelectorAll('.nav-link');
     const scripts = {
         "Listen": "/js/employee/listening/detail-Listen.js",
-        "Listen-write": "/js/employee/listening/detail-ListenAndWrite.js",
-        "Listen-repeat": "/js/employee/listening/detail-ListenAndRepeat.js"
+        "Listen-write": "/js/employee/listening/detail-ListenAndWrite.js"
     };
 
     tabButtons.forEach(button => {
@@ -13,12 +12,12 @@ document.addEventListener("DOMContentLoaded", function() {
         });
     });
 
+
     function loadScript(src) {
         const existingScript = document.getElementById('dynamic-script');
         if (existingScript) {
             existingScript.remove(); // Gỡ bỏ script cũ nếu có
         }
-
 
         const script = document.createElement("script");
         script.type = 'module';

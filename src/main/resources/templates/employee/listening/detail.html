@@ -96,6 +96,7 @@
         <div class="card">
             <div class="card-body">
                 <h5 class="card-title">Detail Listening Lesson</h5>
+
                 <!-- Thanh hiển thị thời gian audio -->
                 <div id="audio-player-container" class="mb-4">
                     <audio id="audio-player" controls class="w-100">
@@ -107,19 +108,14 @@
                         <ul class="nav nav-tabs nav-tabs-bordered">
 
                             <li class="nav-item">
-                                <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#Listen">Listen
+                                <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#Listen">Listen and
+                                    repeat
                                 </button>
                             </li>
 
                             <li class="nav-item">
                                 <button class="nav-link" data-bs-toggle="tab" data-bs-target="#Listen-write">Listen and
                                     write
-                                </button>
-                            </li>
-
-                            <li class="nav-item">
-                                <button class="nav-link" data-bs-toggle="tab" data-bs-target="#Listen-repeat">Listen and
-                                    repeat
                                 </button>
                             </li>
                         </ul>
@@ -135,15 +131,25 @@
                             </div>
 
                             <div class="tab-pane fade pt-3" id="Listen-write">
+                                <div class="mb-3 d-flex gap-2">
+                                    <button id="startButton" class="btn btn-success btn-sm">
+                                        ▶️ Start
+                                    </button>
+                                    <button id="replayButton" class="btn btn-warning btn-sm">
+                                        🔁 Replay
+                                    </button>
+                                    <button id="nextButton" class="btn btn-info btn-sm">
+                                        ⏭️ Next
+                                    </button>
+                                </div>
+
+
                                 <ul id="subtitles-list-answer" class="list-group">
                                     <!-- Các lời thoại sẽ được tạo từ JavaScript -->
                                 </ul>
-                                <textarea id="inputText" rows="1" class="form-control" placeholder="Nhập văn bản tại đây..."></textarea>
+                                <textarea id="inputText" rows="1" class="form-control"
+                                          placeholder="Nhập văn bản tại đây..."></textarea>
                                 <div class="output" id="outputText"></div>
-                            </div>
-
-                            <div class="tab-pane fade pt-3" id="Listen-repeat">
-                                Listen and repeat
                             </div>
 
                         </div><!-- End Bordered Tabs -->

@@ -1,5 +1,7 @@
 export var lines = []; // phải để const
 document.addEventListener("DOMContentLoaded", function () {
+    document.getElementById('loadingSpinner').classList.remove('d-none');
+
     const detailBreadcrumb = document.getElementById("detail-breadcrumb");
 
     const baseUrl = window.location.origin;
@@ -16,9 +18,12 @@ document.addEventListener("DOMContentLoaded", function () {
         .then(data => {
             lines = data.lines;
             setupAudio(data);
+            // Ẩn spinner khi nhận phản hồi
+            document.getElementById('loadingSpinner').classList.add('d-none');
         })
         .catch(error => {
-            console.error("Error fetching lessons:", error);
+            // Ẩn spinner khi nhận phản hồi
+            document.getElementById('loadingSpinner').classList.add('d-none');
             subtitlesList.innerHTML = '<li class="list-group-item text-danger">Error loading subtitles</li>';
             alert("Error loading lessons.");
         });
