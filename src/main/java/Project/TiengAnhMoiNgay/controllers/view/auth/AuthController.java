@@ -1,6 +1,5 @@
 package Project.TiengAnhMoiNgay.controllers.view.auth;
 
-import Project.TiengAnhMoiNgay.model.StringURL;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -15,11 +14,11 @@ public class AuthController {
 
     @GetMapping("/login")
     public String login() {
-        return "auth/login";
+        return "/auth/login";
     }
 
     @GetMapping("/register")
     public String register(Model model) {
-        return "auth/register";
+        return "/auth/register";
     }
 }

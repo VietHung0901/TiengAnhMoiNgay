@@ -15,16 +15,16 @@ public class Listening_LessonsController {
 
     @GetMapping("/list/{pageNumber}")
     public String list(@PathVariable("pageNumber") int pageNumber) {
-        return "employee/listening/list";
+        return "/employee/listening/list";
     }
 
     @GetMapping("/create")
     public String create() {
-        return "employee/listening/create";
+        return "/employee/listening/create";
     }
 
     @GetMapping("/detail/{id}")
     public String detail(@PathVariable("id") Long listening_lessonId) {
-        return "employee/listening/detail";
+        return "/employee/listening/detail";
     }
 }

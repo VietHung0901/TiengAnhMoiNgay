@@ -7,11 +7,12 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @Configuration
 public class WebConfig implements WebMvcConfigurer {
-    StringURL dir = new StringURL();
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         // Ánh xạ URL "/subtitles/**" đến thư mục ngoài
         registry.addResourceHandler("/subtitles/**")
-                .addResourceLocations("file:" + dir.getDirSubtitles());
+                .addResourceLocations("file:" + StringURL.dirSubtitles);
+        registry.addResourceHandler("/writings/**")
+                .addResourceLocations("file:" + StringURL.dirFilePath);
     }
 }

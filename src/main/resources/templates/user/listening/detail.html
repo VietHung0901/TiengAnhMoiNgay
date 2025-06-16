@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+
+  <title>Detail Listening Lesson</title>
+  <meta content="" name="description">
+  <meta content="" name="keywords">
+
+  <!-- Favicons -->
+  <link href="/assets/img/favicon.png" rel="icon">
+  <link href="/assets/img/apple-touch-icon.png" rel="apple-touch-icon">
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.gstatic.com" rel="preconnect">
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i"
+        rel="stylesheet">
+
+  <!-- Vendor CSS Files -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+  <link href="/assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+
+
+  <!-- Template Main CSS File -->
+  <link href="/assets/css/style.css" rel="stylesheet">
+  <style>
+    .subtitles-container {
+      max-height: 300px; /* Fixed height for the scrollable area */
+      overflow-y: auto; /* Enable vertical scrolling */
+      border: 1px solid #dee2e6; /* Optional: Add border for visual clarity */
+      border-radius: 4px; /* Optional: Rounded corners */
+      padding: 10px; /* Optional: Add padding for better appearance */
+    }
+
+    .subtitles-list {
+      margin: 0;
+      padding: 0;
+    }
+
+    .subtitles-list .list-group-item {
+      cursor: pointer;
+      transition: background-color 0.3s; /* Smooth transition for highlight */
+    }
+
+    /* Custom scrollbar styling (optional, for modern browsers) */
+    .subtitles-container::-webkit-scrollbar {
+      width: 8px;
+    }
+
+    .subtitles-container::-webkit-scrollbar-track {
+      background: #f1f1f1;
+    }
+
+    .subtitles-container::-webkit-scrollbar-thumb {
+      background: #888;
+      border-radius: 4px;
+    }
+
+    .subtitles-container::-webkit-scrollbar-thumb:hover {
+      background: #555;
+    }
+  </style>
+</head>
+
+<body>
+
+<th:block th:replace="~{partial/user_header :: user_header}"></th:block>
+<th:block th:replace="~{partial/user_sidebar :: user_sidebar}"></th:block>
+
+<main id="main" class="main">
+  <div class="pagetitle">
+    <h1>Listening</h1>
+    <nav>
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item active"><a href="/view/user/listening/list/1">List</a></li>
+        <li class="breadcrumb-item active"><a id="detail-breadcrumb" href="#">Detail</a></li>
+      </ol>
+    </nav>
+  </div><!-- End Page Title -->
+
+  <th:block th:replace="~{partial/notify :: notify}"></th:block>
+  <th:block th:replace="~{partial/loading :: loading}"></th:block>
+
+  <section class="section dashboard">
+    <div class="card">
+      <div class="card-body">
+        <h5 class="card-title">Detail Listening Lesson</h5>
+
+        <!-- Thanh hiển thị thời gian audio -->
+        <div id="audio-player-container" class="mb-4">
+          <audio id="audio-player" controls class="w-100">
+            <source id="audio-source" src="" type="audio/mp3">
+            Your browser does not support the audio element.
+          </audio>
+          <div class="card-body pt-2">
+            <!-- Bordered Tabs -->
+            <ul class="nav nav-tabs nav-tabs-bordered">
+
+              <li class="nav-item">
+                <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#Listen">Listen and
+                  repeat
+                </button>
+              </li>
+
+              <li class="nav-item">
+                <button class="nav-link" data-bs-toggle="tab" data-bs-target="#Listen-write">Listen and
+                  write
+                </button>
+              </li>
+            </ul>
+            <div class="tab-content pt-2">
+
+              <div class="tab-pane fade pt-3 show active Listen-write" id="Listen">
+                <!-- Bảng danh sách lời thoại -->
+                <div id="subtitles-container" class="subtitles-container">
+                  <ul id="subtitles-list" class="list-group subtitles-list">
+                    <!-- Các lời thoại sẽ được tạo từ JavaScript -->
+                  </ul>
+                </div>
+              </div>
+
+              <div class="tab-pane fade pt-3" id="Listen-write">
+                <div class="mb-3 d-flex gap-2">
+                  <button id="startButton" class="btn btn-success btn-sm">
+                    ▶️ Start
+                  </button>
+                  <button id="replayButton" class="btn btn-warning btn-sm">
+                    🔁 Replay
+                  </button>
+                  <button id="nextButton" class="btn btn-info btn-sm">
+                    ⏭️ Next
+                  </button>
+                </div>
+
+
+                <div id="subtitles-container-answer" class="subtitles-container">
+                  <ul id="subtitles-list-answer" class="list-group subtitles-list">
+                    <!-- Các lời thoại sẽ được tạo từ JavaScript -->
+                  </ul>
+                </div>
+
+                <textarea id="inputText" rows="1" class="form-control"
+                          placeholder="Nhập văn bản tại đây..."></textarea>
+                <div class="output" id="outputText"></div>
+              </div>
+
+            </div><!-- End Bordered Tabs -->
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</main><!-- End #main -->
+
+<th:block th:replace="~{partial/user_footer :: user_footer}"></th:block>
+
+<a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i
+        class="bi bi-arrow-up-short"></i></a>
+
+<!-- Script for Listen -->
+<script type="module" th:src="@{/js/listening/detail-Load.js}"></script>
+<script type="module" th:src="@{/js/listening/detail-Select-js.js}"></script>
+
+<!-- Vendor JS Files -->
+<script src="/assets/vendor/apexcharts/apexcharts.min.js"></script>
+
+<!-- <script src="/assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script> -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+        crossorigin="anonymous"></script>
+
+<!-- Template Main JS File -->
+<script src="/assets/js/main.js"></script>
+
+</body>
+
+</html>

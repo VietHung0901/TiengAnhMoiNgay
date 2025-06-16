@@ -28,9 +28,17 @@ document.addEventListener("DOMContentLoaded", function () {
                 if (data.status === "success") {
                     showNotification(data.message, "success");
                     localStorage.setItem("token", data.data.token);
-                    setTimeout(() => {
-                        window.location.href = "/view/admin/dashboard";
-                    }, 1000);
+                    localStorage.setItem("name", data.data.name);
+                    localStorage.setItem("role", data.data.role);
+
+                    if(data.data.role === "EMPLOYEE" || data.data.role === "MANAGER")
+                        setTimeout(() => {
+                            window.location.href = "/view/admin/dashboard";
+                        }, 1000);
+                    if(data.data.role === "USER")
+                        setTimeout(() => {
+                            window.location.href = "/view/user/home";
+                        }, 1000);
                 } else {
                     // Kiểm tra nếu có `errors` dạng object
                     if (data.errors) {

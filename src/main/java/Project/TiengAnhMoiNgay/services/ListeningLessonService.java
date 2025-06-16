@@ -1,7 +1,7 @@
 package Project.TiengAnhMoiNgay.services;
 
-import Project.TiengAnhMoiNgay.entities.Listening_lessons;
-import Project.TiengAnhMoiNgay.entities.Subtitle_lines;
+import Project.TiengAnhMoiNgay.entities.Listening_lesson;
+import Project.TiengAnhMoiNgay.entities.Subtitle_line;
 import Project.TiengAnhMoiNgay.model.StringURL;
 import Project.TiengAnhMoiNgay.repositories.IListeningLessonRepository;
 import Project.TiengAnhMoiNgay.repositories.ISubtitleLineRepository;
@@ -18,61 +18,74 @@ import java.util.Optional;
 @Service
 @RequiredArgsConstructor
 public class ListeningLessonService {
-    StringURL dir = new StringURL();
 
     private final IListeningLessonRepository lessonRepo;
     private final ISubtitleLineRepository subtitleRepo;
 
     private final YoutubeSubtitleService ytService;
 
-    public boolean isYoutubeUrlExists(String youtubeUrl){
+    public boolean isYoutubeUrlExists(String youtubeUrl) {
         return lessonRepo.existsByYoutubeUrl(youtubeUrl);
     }
 
-    public List<Listening_lessons> getAllListeningLessons() {
+    public List<Listening_lesson> getAllListeningLessons() {
         return lessonRepo.findAll();
     }
 
-    public Page<Listening_lessons> Pageable_ListeningLessons(Pageable pageable) {
-        return lessonRepo.findAll(pageable);
+    public Page<Listening_lesson> Pageable_ListeningLessons(Pageable pageable, String status) {
+        if (status == null)
+            return lessonRepo.findAll(pageable);
+        return lessonRepo.findByStatus(pageable, status);
     }
 
-    public Optional<Listening_lessons> getListeningLessonById(Long id) {
+    public Optional<Listening_lesson> getListeningLessonById(Long id) {
         return lessonRepo.findById(id);
+    }
+
+    public static String extractRelativePath(String fullPath) {
+        String target = "/subtitles/audios/";
+        int index = fullPath.indexOf(target);
+        if (index != -1) {
+            return fullPath.substring(index);
+        } else {
+            return null;
+        }
     }
 
     @Async
     public void createLesson(String title, String youtubeUrl, String videoId) throws IOException, InterruptedException {
         try {
-                // Tạo lesson với status là processing
-                Listening_lessons lesson = Listening_lessons.builder().title(title).youtubeUrl(youtubeUrl).status("processing").build();
+            // Tạo lesson với status là processing
+            Listening_lesson lesson = Listening_lesson.builder().title(title).youtubeUrl(youtubeUrl).status("processing").build();
 
-                lesson = lessonRepo.save(lesson);
+            lesson = lessonRepo.save(lesson);
 
-                // Tải audio
-                String audioPath = ytService.downloadAudioForWhisper(youtubeUrl, dir.getDirSubtitles_audio(), videoId);
+            // Tải audio
+            String audioPath = ytService.downloadAudioForWhisper(youtubeUrl, StringURL.dirSubtitles_audio, videoId);
 
-                // Dùng Whisper để tạo file srt từ audio
-                File srtFile = ytService.generateSRTWithWhisper(videoId, dir.getDirSubtitles_sub(), audioPath);
+            // Dùng Whisper để tạo file srt từ audio
+            File srtFile = ytService.generateSRTWithWhisper(videoId, StringURL.dirSubtitles_sub, audioPath);
 
-                // Parse phụ đề và gán vào lesson
-                List<Subtitle_lines> lines = ytService.parseSrt(srtFile);
+            // Parse phụ đề và gán vào lesson
+            List<Subtitle_line> lines = ytService.parseSrt(srtFile);
 
-                // Lưu danh sách subline
-                for (Subtitle_lines line : lines) {
-                    line.setLesson(lesson);
-                }
-                subtitleRepo.saveAll(lines);
+            srtFile.delete();
 
-                // Cập nhập status done
-                lesson.setLines(lines);
-                lesson.setAudioUrl(audioPath);
-                lesson.setStatus("done");
-                lessonRepo.save(lesson);
+            // Lưu danh sách subline
+            for (Subtitle_line line : lines) {
+                line.setLesson(lesson);
+            }
+            subtitleRepo.saveAll(lines);
+
+            // Cập nhập status done
+            lesson.setLines(lines);
+            lesson.setAudioUrl(extractRelativePath(audioPath));
+            lesson.setStatus("done");
+            lessonRepo.save(lesson);
         } catch (Exception e) {
             // Có thể lưu trạng thái lỗi vào DB nếu lesson đã được tạo
             try {
-                Listening_lessons lessonError = lessonRepo.findByYoutubeUrl(youtubeUrl);
+                Listening_lesson lessonError = lessonRepo.findByYoutubeUrl(youtubeUrl);
                 if (lessonError != null) {
                     // Cập nhập status error
                     lessonError.setStatus("error - " + e.getMessage());

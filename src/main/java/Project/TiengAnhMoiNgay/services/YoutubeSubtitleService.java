@@ -1,6 +1,6 @@
 package Project.TiengAnhMoiNgay.services;
 
-import Project.TiengAnhMoiNgay.entities.Subtitle_lines;
+import Project.TiengAnhMoiNgay.entities.Subtitle_line;
 import Project.TiengAnhMoiNgay.model.StringURL;
 import Project.TiengAnhMoiNgay.repositories.IListeningLessonRepository;
 import lombok.RequiredArgsConstructor;
@@ -15,10 +15,8 @@ import java.util.*;
 public class YoutubeSubtitleService {
     private final IListeningLessonRepository lessonRepo;
 
-    StringURL dir = new StringURL();
-
     public boolean isYoutubeVideoExists(String youtubeUrl) {
-        String ytDlpPath = dir.getDirTools_ytdlp(); // Nơi chứa yt-dlp
+        String ytDlpPath = StringURL.dirTools_ytdlp; // Nơi chứa yt-dlp
         try {
             ProcessBuilder pb = new ProcessBuilder(ytDlpPath, "--get-title", youtubeUrl);
             pb.redirectErrorStream(true);
@@ -38,7 +36,7 @@ public class YoutubeSubtitleService {
 
     // Tải về audio từ YouTube để Whisper xử lý
     public String downloadAudioForWhisper(String youtubeUrl, String outputDir, String videoId) throws IOException, InterruptedException {
-        String ytDlpPath = dir.getDirTools_ytdlp(); // Nơi chứa yt-dlp
+        String ytDlpPath = StringURL.dirTools_ytdlp; // Nơi chứa yt-dlp
         String audioPath = outputDir + videoId + ".mp3";
 
         List<String> command = List.of(
@@ -63,7 +61,7 @@ public class YoutubeSubtitleService {
     }
 
     public File generateSRTWithWhisper(String videoId, String outputDir, String audioPath) throws IOException, InterruptedException {
-        String pythonPath = dir.getDirTools_whisper();
+        String pythonPath = StringURL.dirTools_whisper;
         // Câu lệnh gọi whisper bằng Python
         List<String> command = new ArrayList<>();
         command.add(pythonPath);
@@ -95,8 +93,8 @@ public class YoutubeSubtitleService {
         return newSubtitleFile;
     }
 
-    public List<Subtitle_lines> parseSrt(File srtFile) throws IOException {
-        List<Subtitle_lines> lines = new ArrayList<>();
+    public List<Subtitle_line> parseSrt(File srtFile) throws IOException {
+        List<Subtitle_line> lines = new ArrayList<>();
         BufferedReader reader = new BufferedReader(new FileReader(srtFile));
 
         String line;
@@ -123,7 +121,7 @@ public class YoutubeSubtitleService {
                 // Nếu dòng text[2] != null sẽ lưu nội dung
                 if (!line.trim().isEmpty()) {
                     contentToUse = line;
-                    lines.add(Subtitle_lines.builder()
+                    lines.add(Subtitle_line.builder()
                             .startTime(startTime)
                             .endTime(endTime)
                             .content(contentToUse.trim())
@@ -131,10 +129,10 @@ public class YoutubeSubtitleService {
                 } else {    // Nếu dòng text[2] == null sẽ cho endtime của block dưới là endtime của block trên
                     int lastIndex = lines.size() - 1;
                     if (lastIndex >= 0) {
-                        Subtitle_lines oldLine = lines.get(lastIndex);
+                        Subtitle_line oldLine = lines.get(lastIndex);
 
                         // Tạo bản mới với dữ liệu được cập nhật
-                        Subtitle_lines updatedLine = Subtitle_lines.builder()
+                        Subtitle_line updatedLine = Subtitle_line.builder()
                                 .startTime(oldLine.getStartTime())
                                 .endTime(endTime)                   // cập nhật endTime
                                 .content(oldLine.getContent())

@@ -1,7 +1,6 @@
 package Project.TiengAnhMoiNgay.controllers.api;
 
-import Project.TiengAnhMoiNgay.entities.Listening_lessons;
-import Project.TiengAnhMoiNgay.entities.Subtitle_lines;
+import Project.TiengAnhMoiNgay.entities.Listening_lesson;
 import Project.TiengAnhMoiNgay.model.StringURL;
 import Project.TiengAnhMoiNgay.request.Listening_LessonCreate;
 import Project.TiengAnhMoiNgay.response.Listening_LessonGet;
@@ -19,8 +18,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -35,10 +32,10 @@ public class ApiListening_LessonController {
     private final YoutubeSubtitleService ytService;
 
     @GetMapping("/list/{pageNumber}")
-    public ResponseEntity<?> listLesson(@PathVariable("pageNumber") int pageNumber) {
+    public ResponseEntity<?> listListeningLesson(@PathVariable("pageNumber") int pageNumber, @RequestParam(value = "status", required = false) String status) {
         try {
             Pageable pageable = PageRequest.of(pageNumber - 1, 10);
-            Page<Listening_lessons> pageLessons = lessonService.Pageable_ListeningLessons(pageable);
+            Page<Listening_lesson> pageLessons = lessonService.Pageable_ListeningLessons(pageable, status);
 
             List<Listening_LessonGet> listLesson = pageLessons.stream().map(lesson -> Listening_LessonGet.builder().Id(lesson.getId()).title(lesson.getTitle()).youtubeUrl(lesson.getYoutubeUrl()).status(lesson.getStatus()).build()).toList();
 
@@ -49,22 +46,21 @@ public class ApiListening_LessonController {
     }
 
     @PostMapping("/create")
-    public ResponseEntity<?> createLesson(@RequestBody @Valid Listening_LessonCreate listening_lesson) {
+    public ResponseEntity<?> createListeningLesson(@RequestBody @Valid Listening_LessonCreate listening_lesson) {
 
         String youtubeUrl = listening_lesson.getYoutubeUrl(), title = listening_lesson.getTitle();
 
         if (lessonService.isYoutubeUrlExists(youtubeUrl)) {
-            return ResponseEntity.ok(Map.of("status", "error", "message", "This lesson already exists."));
+            return ResponseEntity.ok(Map.of("status", "error", "message", "This lesson already exists"));
         }
 
         // Kiểm tra url cung cấp có tồn tại video youtube không
         if (!ytService.isYoutubeVideoExists(youtubeUrl)) {
-            return ResponseEntity.badRequest().body(Map.of("status", "error", "message", "Video not found or not accessible."));
+            return ResponseEntity.badRequest().body(Map.of("status", "error", "message", "Video not found or not accessible"));
         }
 
         youtubeUrl = youtubeUrl.split("&")[0];
         String videoId = ytService.extractVideoId(youtubeUrl);
-        Path filePath = Paths.get(dir.getDirSubtitles_sub(), videoId + ".srt");
 
         try {
             // Gọi bất đồng bộ
@@ -77,14 +73,14 @@ public class ApiListening_LessonController {
     }
 
     @GetMapping("/details/{id}")
-    public ResponseEntity<?> detailsLesson(@PathVariable("id") Long listening_lessonId) {
-        Optional<Listening_lessons> listening_lesson = lessonService.getListeningLessonById(listening_lessonId);
+    public ResponseEntity<?> detailListeningLesson(@PathVariable("id") Long listening_lessonId) {
+        Optional<Listening_lesson> listening_lesson = lessonService.getListeningLessonById(listening_lessonId);
         try {
             if (listening_lesson.isEmpty()) {
-                return ResponseEntity.ok(Map.of("status", "error", "message", "This lesson not exists."));
+                return ResponseEntity.ok(Map.of("status", "error", "message", "This lesson not exists"));
             }
             // Trả về phản hồi ngay cho client
-            return ResponseEntity.ok(Map.of("status", "success", "message", "listening lessons retrieved successfully.", "data", listening_lesson));
+            return ResponseEntity.ok(Map.of("status", "success", "message", "listening lessons retrieved successfully", "data", listening_lesson));
         } catch (Exception e) {
             return ResponseEntity.status(500).body(Map.of("status", "error", "message", e.getMessage()));
         }
@@ -96,11 +92,11 @@ public class ApiListening_LessonController {
         try {
             // Kiểm tra xem tệp voice có được gửi lên không
             if (voiceFile == null || voiceFile.isEmpty()) {
-                return ResponseEntity.status(400).body(Map.of("status", "error", "message", "Tệp ghi âm không được gửi."));
+                return ResponseEntity.status(400).body(Map.of("status", "error", "message", "The recording file could not be sent"));
             }
 
             // Lưu tệp ghi âm tạm thời vào thư mục tạm
-            String tempDir = dir.getDirSubtitles_audio();
+            String tempDir = StringURL.dirSubtitles_audio;
             File tempDirFile = new File(tempDir);
             if (!tempDirFile.exists()) {
                 tempDirFile.mkdirs(); // Tạo thư mục nếu chưa tồn tại
@@ -114,7 +110,7 @@ public class ApiListening_LessonController {
             String audioPath = tempAudioFile.getAbsolutePath();
 
             // Dùng Whisper để tạo file srt từ audio
-            File srtFile = ytService.generateSRTWithWhisper(nameTempAudioFile, dir.getDirSubtitles_sub(), audioPath);
+            File srtFile = ytService.generateSRTWithWhisper(nameTempAudioFile, StringURL.dirSubtitles_sub, audioPath);
 
             // Parse phụ đề và gán vào lesson
             String lines = ytService.parseSrtFromVoice(srtFile);
@@ -126,11 +122,11 @@ public class ApiListening_LessonController {
             // Trả về phản hồi ngay cho client
             return ResponseEntity.ok(Map.of("status", "success", "message", "Generate text from voice successlly!", "data", lines));
         } catch (IOException e) {
-            return ResponseEntity.status(500).body(Map.of("status", "error", "message", "Lỗi khi lưu tệp âm thanh: " + e.getMessage()));
+            return ResponseEntity.status(500).body(Map.of("status", "error", "message", "Error saving audio file: " + e.getMessage()));
         } catch (InterruptedException e) {
-            return ResponseEntity.status(500).body(Map.of("status", "error", "message", "Lỗi khi xử lý Whisper: " + e.getMessage()));
+            return ResponseEntity.status(500).body(Map.of("status", "error", "message", "Error while processing Whisper: " + e.getMessage()));
         } catch (Exception e) {
-            return ResponseEntity.status(500).body(Map.of("status", "error", "message", "Lỗi không xác định: " + e.getMessage()));
+            return ResponseEntity.status(500).body(Map.of("status", "error", "message", "Unknown error: " + e.getMessage()));
         }
     }
 }

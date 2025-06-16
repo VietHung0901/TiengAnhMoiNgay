@@ -48,7 +48,7 @@ public class ApiAuthController {
             String token = jwtTokenUtil.generateToken(user);
 
             // Trả về thông tin JSON chuẩn
-            return ResponseEntity.ok(Map.of("status", "success", "message", "Login successfully!", "data", Map.of("token", "Bearer " + token, "username", user.getUsername(), "role", roleName)));
+            return ResponseEntity.ok(Map.of("status", "success", "message", "Login successfully!", "data", Map.of("token", "Bearer " + token, "username", user.getUsername(), "role", roleName, "name", user.getName())));
         } catch (Exception e) {
             // Xử lý lỗi và trả về phản hồi thất bại
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Map.of("status", "error", "message", e.getMessage()));
@@ -72,7 +72,7 @@ public class ApiAuthController {
     @PostMapping("/logout")
     public ResponseEntity<?> logout() {
         try {
-            return ResponseEntity.ok(Map.of("status", "success", "message", "Đăng xuất thành công"));
+            return ResponseEntity.ok(Map.of("status", "success", "message", "Logout successfully!"));
         } catch (Exception e) {
             // Xử lý lỗi và trả về phản hồi thất bại
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Map.of("status", "error", "message", e.getMessage()));
