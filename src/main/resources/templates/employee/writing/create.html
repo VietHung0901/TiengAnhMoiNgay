@@ -58,11 +58,7 @@
                         <input type="text" class="form-control" id="title">
                         <div class="invalid-feedback">Enter a valid title!</div>
                     </div>
-                    <div class="col-12">
-                        <label for="file" class="form-label">File</label>
-                        <input type="file" class="form-control" id="file">
-                        <div class="invalid-feedback">Enter a valid file!</div>
-                    </div>
+
                     <div class="col-12">
                         <label for="level" class="form-label">Level</label>
                         <select class="form-select" id="level" required>
@@ -72,6 +68,20 @@
                         </select>
                         <div class="invalid-feedback">Please select a valid level!</div>
                     </div>
+
+                    <!-- Preview file word -->
+                    <div class="col-12">
+                        <label for="file" class="form-label">File</label>
+                        <input type="file" class="form-control" id="file"
+                               accept=".docx,application/vnd.openxmlformats-officedocument.wordprocessingml.document">
+                        <div class="invalid-feedback">Please upload a Word document (.docx)!</div>
+                    </div>
+                    <div class="col-12 mt-3">
+                        <label class="form-label">Preview</label>
+                        <div id="preview" style="border: 1px solid #ccc; padding: 10px; min-height: 150px; background: #f9f9f9;"></div>
+                    </div>
+                    <!-- Preview file word -->
+
                     <div class="text-center">
                         <button type="submit" class="btn btn-primary">Submit</button>
                         <button type="reset" class="btn btn-secondary">Reset</button>
@@ -85,8 +95,7 @@
 
 <th:block th:replace="~{partial/employee_footer :: employee_footer}"></th:block>
 
-<a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i
-        class="bi bi-arrow-up-short"></i></a>
+<a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
 
 <!-- Script for Create -->
 <script th:src="@{/js/writing/create.js}"></script>
@@ -100,7 +109,8 @@
         crossorigin="anonymous"></script>
 <!-- Template Main JS File -->
 <script src="/assets/js/main.js"></script>
-
+<!-- Preview file word-->
+<script src="https://unpkg.com/mammoth/mammoth.browser.min.js"></script>
 </body>
 
 </html>

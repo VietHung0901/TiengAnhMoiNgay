@@ -21,14 +21,20 @@ document.addEventListener("DOMContentLoaded", function () {
         .then(data => {
             lines = data.lines;
             setupAudio(data);
+            if(data.errorMessage != null && data.errorMessage.trim() !== "")
+            {
+                document.getElementById('AlertError').classList.remove('d-none');
+                document.getElementById('errorMessage').innerText = data.errorMessage;
+                console.log(data.errorMessage);
+            }
             // Ẩn spinner khi nhận phản hồi
             document.getElementById('loadingSpinner').classList.add('d-none');
         })
         .catch(error => {
             // Ẩn spinner khi nhận phản hồi
             document.getElementById('loadingSpinner').classList.add('d-none');
-            subtitlesList.innerHTML = '<li class="list-group-item text-danger">Error loading subtitles</li>';
-            alert("Error loading lessons.");
+            document.getElementById('errorMessage').innerText = "Error loading subtitles";
+
         });
 });
 
@@ -64,3 +70,4 @@ function setupAudio(data) {
     audioSource.src = data.audioUrl;
     audioPlayer.load();
 }
+

@@ -9,6 +9,8 @@ import lombok.Setter;
 public class Listening_LessonGet {
     private Long Id;
     private String title;
+    private String level;
     private String youtubeUrl;
     private String status;
+    private String error;
 }

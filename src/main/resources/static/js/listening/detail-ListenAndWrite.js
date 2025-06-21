@@ -57,7 +57,6 @@ inputText.addEventListener('keypress', function (event) {
     }
 });
 
-
 // Thêm câu trả lời và đánh giá đúng/sai
 function addAnswerToList(userAnswer, correctAnswer) {
     const listItem = document.createElement("li");
@@ -99,7 +98,7 @@ replayButton.addEventListener('click', () => {
     }, 100);
 });
 
-// Xử lý nút "Nghe lại"
+// Xử lý nút "Next"
 nextButton.addEventListener('click', () => {
     // Chuẩn bị cho câu kế tiếp
     currentLineIndex++;

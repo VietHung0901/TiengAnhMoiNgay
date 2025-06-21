@@ -23,4 +23,8 @@ public class Level {
     @OneToMany(mappedBy = "level", cascade = CascadeType.ALL)
     @ToString.Exclude
     private List<Writing_lesson> listWritingLesson;
+
+    @OneToMany(mappedBy = "level", cascade = CascadeType.ALL)
+    @ToString.Exclude
+    private List<Listening_lesson> listListeningLesson;
 }

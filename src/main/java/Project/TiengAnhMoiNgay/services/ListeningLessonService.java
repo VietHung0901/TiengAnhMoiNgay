@@ -1,8 +1,10 @@
 package Project.TiengAnhMoiNgay.services;
 
+import Project.TiengAnhMoiNgay.entities.Level;
 import Project.TiengAnhMoiNgay.entities.Listening_lesson;
 import Project.TiengAnhMoiNgay.entities.Subtitle_line;
 import Project.TiengAnhMoiNgay.model.StringURL;
+import Project.TiengAnhMoiNgay.repositories.ILevelRepository;
 import Project.TiengAnhMoiNgay.repositories.IListeningLessonRepository;
 import Project.TiengAnhMoiNgay.repositories.ISubtitleLineRepository;
 import lombok.RequiredArgsConstructor;
@@ -10,6 +12,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.io.*;
 import java.util.List;
@@ -21,7 +24,6 @@ public class ListeningLessonService {
 
     private final IListeningLessonRepository lessonRepo;
     private final ISubtitleLineRepository subtitleRepo;
-
     private final YoutubeSubtitleService ytService;
 
     public boolean isYoutubeUrlExists(String youtubeUrl) {
@@ -53,13 +55,8 @@ public class ListeningLessonService {
     }
 
     @Async
-    public void createLesson(String title, String youtubeUrl, String videoId) throws IOException, InterruptedException {
+    public void createLessonLink(Listening_lesson lesson, String youtubeUrl, String videoId) throws IOException, InterruptedException {
         try {
-            // Tạo lesson với status là processing
-            Listening_lesson lesson = Listening_lesson.builder().title(title).youtubeUrl(youtubeUrl).status("processing").build();
-
-            lesson = lessonRepo.save(lesson);
-
             // Tải audio
             String audioPath = ytService.downloadAudioForWhisper(youtubeUrl, StringURL.dirSubtitles_audio, videoId);
 
@@ -85,15 +82,60 @@ public class ListeningLessonService {
         } catch (Exception e) {
             // Có thể lưu trạng thái lỗi vào DB nếu lesson đã được tạo
             try {
-                Listening_lesson lessonError = lessonRepo.findByYoutubeUrl(youtubeUrl);
-                if (lessonError != null) {
-                    // Cập nhập status error
-                    lessonError.setStatus("error - " + e.getMessage());
-                    lessonRepo.save(lessonError);
-                }
+                // Cập nhập status error
+                lesson.setStatus("error");
+                lesson.setErrorMessage(e.getMessage());
+                lessonRepo.save(lesson);
             } catch (Exception ignore) {
                 // Tránh lỗi lồng nhau
             }
         }
+    }
+
+    @Async
+    public void createLessonAudio(Listening_lesson lesson, MultipartFile audioFile, String filename) throws IOException, InterruptedException {
+        try {
+            // Tải audio
+            String audioPath = ytService.saveAudio(audioFile);
+
+            filename = removeMp3Extension(filename);
+
+            // Dùng Whisper để tạo file srt từ audio
+            File srtFile = ytService.generateSRTWithWhisper(filename, StringURL.dirSubtitles_sub, audioPath);
+
+            // Parse phụ đề và gán vào lesson
+            List<Subtitle_line> lines = ytService.parseSrt(srtFile);
+
+            srtFile.delete();
+
+            // Lưu danh sách subline
+            for (Subtitle_line line : lines) {
+                line.setLesson(lesson);
+            }
+            subtitleRepo.saveAll(lines);
+
+            // Cập nhập status done
+            lesson.setLines(lines);
+            lesson.setAudioUrl(extractRelativePath(audioPath));
+            lesson.setStatus("done");
+            lessonRepo.save(lesson);
+        } catch (Exception e) {
+            // Có thể lưu trạng thái lỗi vào DB nếu lesson đã được tạo
+            try {
+                // Cập nhập status error
+                lesson.setStatus("error");
+                lesson.setErrorMessage(e.getMessage());
+                lessonRepo.save(lesson);
+            } catch (Exception ignore) {
+                // Tránh lỗi lồng nhau
+            }
+        }
+    }
+
+    public String removeMp3Extension(String fileName) {
+        if (fileName != null && fileName.toLowerCase().endsWith(".mp3")) {
+            return fileName.replaceFirst("(?i)\\.mp3$", "");
+        }
+        return fileName;
     }
 }

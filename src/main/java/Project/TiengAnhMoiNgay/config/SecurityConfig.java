@@ -49,15 +49,30 @@ public class SecurityConfig {
         return http.csrf().disable().sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS) // Không dùng session
                 ).authorizeHttpRequests(auth -> auth
 
-                        .requestMatchers("/js/**", "/assets/**", "/assets1/**", "/subtitles/**", "/api/auth/**", "/", "/view/**").permitAll()
+                        // No access required
+                        .requestMatchers("/js/**",
+                                        "/assets/**",
+                                        "/assets1/**",
+                                        "/subtitles/**",
+                                        "/api/auth/**",
+                                        "/view/**",
+                                        "/")
+                                        .permitAll()
 
-                        //Chỉ những người có vai trò "USER" hoặc "EMPLOYEE" hoặc "MANAGE" mới được phép truy cập
-                        .requestMatchers("/api/listening_lesson/list/**", "/api/listening_lesson/detail/**","/api/writing_lesson/list/**").hasAnyAuthority("USER", "EMPLOYEE", "MANAGER")
+                        // access role: USER/EMPLOYEE/MANAGE
+                        .requestMatchers("/api/listening_lesson/list/**",
+                                        "/api/listening_lesson/detail/**",
+                                        "/api/writing_lesson/list/**",
+                                        "/api/writing_lesson/detail/**",
+                                        "/writings/**")
+                                        .hasAnyAuthority("USER", "EMPLOYEE", "MANAGER")
 
-                        //Chỉ những người có vai trò "EMPLOYEE" hoặc "MANAGE" mới được phép truy cập
-                        .requestMatchers("/api/listening_lesson/create", "/api/writing_lesson/create").hasAnyAuthority("EMPLOYEE", "MANAGER")
+                        // access role: EMPLOYEE/MANAGE
+                        .requestMatchers("/api/listening_lesson/create/**",
+                                        "/api/writing_lesson/create")
+                                        .hasAnyAuthority("EMPLOYEE", "MANAGER")
 
-                        // Các yêu cầu còn lại yêu cầu xác thực
+                        // authentication request
                         .anyRequest().authenticated())
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class).exceptionHandling(exceptionHandling -> exceptionHandling
                         // Xử lý lỗi 401 (Unauthorized)

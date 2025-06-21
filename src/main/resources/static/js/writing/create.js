@@ -1,3 +1,4 @@
+// Submit create
 document.addEventListener("DOMContentLoaded", function () {
     const baseUrl = window.location.origin; // Lấy domain hiện tại (http://localhost:8080 hoặc domain production)
     const createForm = document.querySelector("#createWritingForm");
@@ -43,6 +44,9 @@ document.addEventListener("DOMContentLoaded", function () {
         })
             .then(response => handleApiResponse(response, (data) => {
                 showNotification(data.message || "Tạo bài học thành công.", "success");
+                setTimeout(() => {
+                    window.location.href = "/view/admin/writing/list/1";
+                }, 1000);
             }))
             .catch(error => {
                 showNotification("Lỗi khi gửi yêu cầu: " + error.message, "error");
@@ -50,3 +54,31 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 });
 
+// Preview word
+document.getElementById("file").addEventListener("change", function (event) {
+    const file = event.target.files[0];
+    if (!file || !file.name.endsWith(".docx")) {
+        document.getElementById("preview").innerHTML = "<em>Only .docx files are supported for preview.</em>";
+        return;
+    }
+
+    const reader = new FileReader();
+
+    reader.onload = function (event) {
+        const arrayBuffer = reader.result;
+        mammoth.convertToHtml({ arrayBuffer: arrayBuffer })
+            .then(function (result) {
+                document.getElementById("preview").innerHTML = result.value;
+            })
+            .catch(function (err) {
+                document.getElementById("preview").innerHTML = "Error reading file: " + err.message;
+            });
+    };
+
+    reader.readAsArrayBuffer(file);
+});
+
+// clear preview when reset button clicked
+document.getElementById("createWritingForm").addEventListener("reset", function () {
+    document.getElementById("preview").innerHTML = "";
+});

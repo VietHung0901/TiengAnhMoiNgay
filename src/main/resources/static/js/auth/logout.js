@@ -6,10 +6,7 @@ document.addEventListener("DOMContentLoaded", function () {
         e.preventDefault(); // Ngăn chuyển trang
 
         fetch(`${baseUrl}/api/auth/logout`, {
-            method: 'POST',
-            headers: {
-                'Authorization': localStorage.getItem("token")
-            }
+            method: 'POST'
         })
             .then(res => res.json())
             .then(data => {

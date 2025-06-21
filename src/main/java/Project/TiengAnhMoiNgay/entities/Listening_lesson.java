@@ -1,5 +1,6 @@
 package Project.TiengAnhMoiNgay.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -26,7 +27,14 @@ public class Listening_lesson {
 
     private String status;
 
+    private String errorMessage;
+
     @OneToMany(mappedBy = "lesson", cascade = CascadeType.ALL)
     @ToString.Exclude
     private List<Subtitle_line> lines;
+
+    @ManyToOne
+    @JoinColumn(name = "level_id") // Tạo khóa ngoại
+    @JsonIgnore
+    private Level level;
 }

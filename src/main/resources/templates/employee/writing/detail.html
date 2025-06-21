@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
 
-    <title>Detail Listening Lesson</title>
+    <title>Detail Writing Lesson</title>
     <meta content="" name="description">
     <meta content="" name="keywords">
 
@@ -72,10 +72,10 @@
 
 <main id="main" class="main">
     <div class="pagetitle">
-        <h1>Listening</h1>
+        <h1>Writing</h1>
         <nav>
             <ol class="breadcrumb">
-                <li class="breadcrumb-item active"><a href="/view/admin/listening/list/1">List</a></li>
+                <li class="breadcrumb-item active"><a href="/view/admin/writing/list/1">List</a></li>
                 <li class="breadcrumb-item active"><a id="detail-breadcrumb" href="#">Detail</a></li>
             </ol>
         </nav>
@@ -88,72 +88,50 @@
     <section class="section dashboard">
         <div class="card">
             <div class="card-body">
-                <h5 class="card-title">Detail Listening Lesson</h5>
+                <h5 class="card-title">Detail Writing Lesson</h5>
 
-                <!-- Thanh hiển thị thời gian audio -->
-                <div id="audio-player-container" class="mb-4">
-                    <audio id="audio-player" controls class="w-100">
-                        <source id="audio-source" src="" type="audio/mp3">
-                        Your browser does not support the audio element.
-                    </audio>
-                    <div class="card-body pt-2">
-                        <!-- Bordered Tabs -->
-                        <ul class="nav nav-tabs nav-tabs-bordered">
+                <div class="row">
+                    <div class="col-md-8">
 
-                            <li class="nav-item">
-                                <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#Listen">Listen and
-                                    repeat
-                                </button>
-                            </li>
-
-                            <li class="nav-item">
-                                <button class="nav-link" data-bs-toggle="tab" data-bs-target="#Listen-write">Listen and
-                                    write
-                                </button>
-                            </li>
-                        </ul>
-                        <div class="tab-content pt-2">
-
-                            <div class="tab-pane fade pt-3 show active Listen-write" id="Listen">
-                                <!-- Bảng danh sách lời thoại -->
-                                <div id="subtitles-container" class="subtitles-container">
-                                    <ul id="subtitles-list" class="list-group subtitles-list">
-                                        <!-- Các lời thoại sẽ được tạo từ JavaScript -->
-                                    </ul>
-                                </div>
+                        <!-- Content -->
+                        <div>
+                            <label class="form-label">Content</label>
+                            <div id="content"
+                                 style="border: 1px solid #ccc; padding: 10px; height: 284px; background: #f9f9f9; overflow: auto;">
+                                <!-- Nội dung bài viết từ file Word -->
                             </div>
+                        </div>
 
-                            <div class="tab-pane fade pt-3" id="Listen-write">
-                                <div class="mb-3 d-flex gap-2">
-                                    <button id="startButton" class="btn btn-success btn-sm">
-                                        ▶️ Start
-                                    </button>
-                                    <button id="replayButton" class="btn btn-warning btn-sm">
-                                        🔁 Replay
-                                    </button>
-                                    <button id="nextButton" class="btn btn-info btn-sm">
-                                        ⏭️ Next
-                                    </button>
-                                </div>
+                        <!-- Answer -->
+                        <div>
+                            <label for="studentReply" class="form-label">Your Answer</label>
+                            <textarea id="studentReply" class="form-control" rows="5"
+                                      placeholder="Only English please! Write your answer here..." readonly></textarea>
+                        </div>
+                    </div>
 
-
-                                <div id="subtitles-container-answer" class="subtitles-container">
-                                    <ul id="subtitles-list-answer" class="list-group subtitles-list">
-                                        <!-- Các lời thoại sẽ được tạo từ JavaScript -->
-                                    </ul>
-                                </div>
-
-                                <textarea id="inputText" rows="1" class="form-control"
-                                          placeholder="Nhập văn bản tại đây..."></textarea>
-                                <div class="output" id="outputText"></div>
+                    <!-- Comment -->
+                    <div class="col-md-4">
+                        <div>
+                            <label for="comment" class="form-label">Comment</label>
+                            <textarea id="comment" class="form-control" rows="16" readonly
+                                      style="background-color: #f3f3f3;"
+                                      placeholder="Comment your answer here...">Sau mỗi câu trả lời, bạn sẽ nhận được một nhận xét tại đây.
+Khi đã hiểu nhận xét, hãy nhấn nút 'Accept' để chuyển sang câu tiếp theo.
+Bạn đã sẵn sàng chưa? Hãy nhấn 'Accept' để bắt đầu.
+                            </textarea>
+                        </div>
+                        <div>
+                            <div class="text-end mt-3">
+                                <button class="btn btn-success" id="accept">Accept</button>
                             </div>
-
-                        </div><!-- End Bordered Tabs -->
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </section>
+
 </main><!-- End #main -->
 
 <th:block th:replace="~{partial/employee_footer :: employee_footer}"></th:block>
@@ -161,9 +139,8 @@
 <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i
         class="bi bi-arrow-up-short"></i></a>
 
-<!-- Script for Listen -->
-<script type="module" th:src="@{/js/listening/detail-Load.js}"></script>
-<script type="module" th:src="@{/js/listening/detail-Select-js.js}"></script>
+<!-- Script for Writing -->
+<script type="module" th:src="@{/js/writing/detail-Load.js}"></script>
 
 <!-- Vendor JS Files -->
 <script src="/assets/vendor/apexcharts/apexcharts.min.js"></script>
@@ -175,7 +152,8 @@
 
 <!-- Template Main JS File -->
 <script src="/assets/js/main.js"></script>
-
+<!-- Preview file word-->
+<script src="https://unpkg.com/mammoth/mammoth.browser.min.js"></script>
 </body>
 
 </html>

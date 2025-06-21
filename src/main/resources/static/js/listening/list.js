@@ -26,7 +26,11 @@ document.addEventListener("DOMContentLoaded", function () {
                 let statusColumn = "";
                 let detail = "Study";
                 if (role !== "user") {
-                    youtubeColumn = `<td><a href="${lesson.youtubeUrl}" target="_blank">${lesson.youtubeUrl}</a></td>`;
+                    if (lesson.youtubeUrl && lesson.youtubeUrl.trim() !== '') {
+                        youtubeColumn = `<td><a href="${lesson.youtubeUrl}" target="_blank">Link</a></td>`;
+                    } else {
+                        youtubeColumn = `<td>Audio</td>`;
+                    }
                     statusColumn = `<td>
                                         <span class="${lesson.status === 'done' ? 'badge bg-success' : (lesson.status === 'processing' ? 'badge bg-warning' : 'badge bg-danger')}">
                                             ${lesson.status}
@@ -39,6 +43,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 row.innerHTML = `
                 <th scope="row">${index + 1}</th>
                 <td>${lesson.title}</td>
+                <td>${lesson.level}</td>
                 ${youtubeColumn}
                 ${statusColumn}
                 <td>

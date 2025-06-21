@@ -32,8 +32,6 @@ public class UserService implements UserDetailsService {
     private IRoleRepository roleRepository;
     @Autowired
     private VerificationTokenRepository verificationTokenRepository;
-    @Autowired
-    private EmailService emailService;
 
     public User findByUsername(String username) {
         return userRepository.findByUsername(username);
@@ -96,21 +94,6 @@ public class UserService implements UserDetailsService {
         user.setStatus(0);
         Save(user);
         setDefaultRole(user.getUsername());
-
-//        //Tạo token khi đăng ký
-//        VerificationToken verificationToken = new VerificationToken();
-//        verificationToken.setToken(UUID.randomUUID().toString());
-//        verificationToken.setUser(user);
-//        verificationToken.setExpiryDate(LocalDateTime.now().plusDays(1)); // Token hết hạn sau 1 ngày
-//        verificationTokenRepository.save(verificationToken);
-//
-//        // Gửi email xác nhận
-//        // Tạo URL xác nhận bằng cách sử dụng lớp StringURL
-//        StringURL stringURL = new StringURL();  // Tạo đối tượng StringURL
-//        String confirmationUrl = stringURL.getHttp() + "/confirm?token=" + verificationToken.getToken();  // Sử dụng getter để lấy http
-//
-//        emailService.sendEmail(user.getUsername(), "Xác nhận email", user, confirmationUrl);
-
         return "Success";
     }
 

@@ -24,7 +24,7 @@ public class Subtitle_line {
 
     // Mối quan hệ ManyToOne với Listening_lessons
     @ManyToOne
-    @JoinColumn(name = "lesson_id") // Tạo khóa ngoại
+    @JoinColumn(name = "lesson_id", nullable = false) // Tạo khóa ngoại
     @JsonIgnore
     private Listening_lesson lesson;
 }

@@ -19,6 +19,8 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.util.Optional;
+
 @Service
 @RequiredArgsConstructor
 public class WritingLessonService {
@@ -30,6 +32,10 @@ public class WritingLessonService {
         if (status == null)
             return writingLessonRepository.findAll(pageable);
         return writingLessonRepository.findByStatus(pageable, status);
+    }
+
+    public Optional<Writing_lesson> getWritingLessonById(Long id) {
+        return writingLessonRepository.findById(id);
     }
 
     public String saveFile(MultipartFile file) {
@@ -56,18 +62,17 @@ public class WritingLessonService {
         return "/writings/" + fileName;
     }
 
-    public void createLesson(String title, MultipartFile file, Long levelId)
-    {
+    public void createLesson(String title, MultipartFile file, Long levelId) {
         try {
             Writing_lesson lesson = new Writing_lesson();
             lesson.setTitle(title);
             lesson.setFilePath(saveFile(file));
-            lesson.setStatus("done");
             if (levelId != null) {
                 Level level = levelRepository.findById(levelId)
                         .orElseThrow(() -> new RuntimeException("Level not found with ID: " + levelId));
                 lesson.setLevel(level);
             }
+            lesson.setStatus("done");
             writingLessonRepository.save(lesson);
         } catch (Exception e) {
             throw new RuntimeException("Failed to create writing lesson", e);

@@ -6,9 +6,10 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class Listening_LessonCreate {
+public class Listening_LessonCreateLink {
     @NotBlank(message = "Title cannot be blank")
     private String title;
     @NotBlank(message = "Link cannot be blank")
     private String youtubeUrl;
+    private Long levelId;
 }

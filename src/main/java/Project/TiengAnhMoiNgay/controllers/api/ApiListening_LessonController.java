@@ -1,8 +1,12 @@
 package Project.TiengAnhMoiNgay.controllers.api;
 
+import Project.TiengAnhMoiNgay.entities.Level;
 import Project.TiengAnhMoiNgay.entities.Listening_lesson;
 import Project.TiengAnhMoiNgay.model.StringURL;
-import Project.TiengAnhMoiNgay.request.Listening_LessonCreate;
+import Project.TiengAnhMoiNgay.repositories.ILevelRepository;
+import Project.TiengAnhMoiNgay.repositories.IListeningLessonRepository;
+import Project.TiengAnhMoiNgay.request.Listening_LessonCreateAudio;
+import Project.TiengAnhMoiNgay.request.Listening_LessonCreateLink;
 import Project.TiengAnhMoiNgay.response.Listening_LessonGet;
 import Project.TiengAnhMoiNgay.services.ListeningLessonService;
 import Project.TiengAnhMoiNgay.services.YoutubeSubtitleService;
@@ -27,9 +31,10 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class ApiListening_LessonController {
 
-    StringURL dir = new StringURL();
     private final ListeningLessonService lessonService;
     private final YoutubeSubtitleService ytService;
+    private final ILevelRepository levelRepository;
+    private final IListeningLessonRepository lessonRepo;
 
     @GetMapping("/list/{pageNumber}")
     public ResponseEntity<?> listListeningLesson(@PathVariable("pageNumber") int pageNumber, @RequestParam(value = "status", required = false) String status) {
@@ -37,7 +42,7 @@ public class ApiListening_LessonController {
             Pageable pageable = PageRequest.of(pageNumber - 1, 10);
             Page<Listening_lesson> pageLessons = lessonService.Pageable_ListeningLessons(pageable, status);
 
-            List<Listening_LessonGet> listLesson = pageLessons.stream().map(lesson -> Listening_LessonGet.builder().Id(lesson.getId()).title(lesson.getTitle()).youtubeUrl(lesson.getYoutubeUrl()).status(lesson.getStatus()).build()).toList();
+            List<Listening_LessonGet> listLesson = pageLessons.stream().map(lesson -> Listening_LessonGet.builder().Id(lesson.getId()).title(lesson.getTitle()).level(lesson.getLevel().getName()).youtubeUrl(lesson.getYoutubeUrl()).status(lesson.getStatus()).build()).toList();
 
             return ResponseEntity.ok(Map.of("status", "success", "message", "List of listening lessons retrieved successfully.", "data", listLesson, "currentPage", pageLessons.getNumber(), "totalItems", pageLessons.getTotalElements(), "totalPages", pageLessons.getTotalPages()));
         } catch (Exception e) {
@@ -45,8 +50,8 @@ public class ApiListening_LessonController {
         }
     }
 
-    @PostMapping("/create")
-    public ResponseEntity<?> createListeningLesson(@RequestBody @Valid Listening_LessonCreate listening_lesson) {
+    @PostMapping("/create/link")
+    public ResponseEntity<?> createListeningLessonLink(@RequestBody @Valid Listening_LessonCreateLink listening_lesson) {
 
         String youtubeUrl = listening_lesson.getYoutubeUrl(), title = listening_lesson.getTitle();
 
@@ -63,8 +68,33 @@ public class ApiListening_LessonController {
         String videoId = ytService.extractVideoId(youtubeUrl);
 
         try {
+            Level level = levelRepository.findById(listening_lesson.getLevelId())
+                    .orElseThrow(() -> new RuntimeException("Level not found with ID: " + listening_lesson.getLevelId()));
+            // Tạo lesson với status là processing
+            Listening_lesson lesson = Listening_lesson.builder().title(title).level(level).youtubeUrl(youtubeUrl).status("processing").build();
+
+            lesson = lessonRepo.save(lesson);
+
             // Gọi bất đồng bộ
-            lessonService.createLesson(title, youtubeUrl, videoId);
+            lessonService.createLessonLink(lesson, youtubeUrl, videoId);
+            // Trả về phản hồi ngay cho client
+            return ResponseEntity.ok(Map.of("status", "success", "message", "Lesson is being generated in background. Please check status later."));
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body(Map.of("status", "error", "message", e.getMessage()));
+        }
+    }
+
+    @PostMapping("/create/audio")
+    public ResponseEntity<?> createListeningLessonAudio(@ModelAttribute @Valid Listening_LessonCreateAudio listening_lesson) {
+        try {
+            Level level = levelRepository.findById(listening_lesson.getLevelId())
+                    .orElseThrow(() -> new RuntimeException("Level not found with ID: " + listening_lesson.getLevelId()));
+            // Tạo lesson với status là processing
+            Listening_lesson lesson = Listening_lesson.builder().title(listening_lesson.getTitle()).level(level).status("processing").build();
+            lesson = lessonRepo.save(lesson);
+
+            // Gọi bất đồng bộ
+            lessonService.createLessonAudio(lesson, listening_lesson.getAudioFile(), listening_lesson.getAudioFile().getOriginalFilename());
             // Trả về phản hồi ngay cho client
             return ResponseEntity.ok(Map.of("status", "success", "message", "Lesson is being generated in background. Please check status later."));
         } catch (Exception e) {
@@ -80,7 +110,7 @@ public class ApiListening_LessonController {
                 return ResponseEntity.ok(Map.of("status", "error", "message", "This lesson not exists"));
             }
             // Trả về phản hồi ngay cho client
-            return ResponseEntity.ok(Map.of("status", "success", "message", "listening lessons retrieved successfully", "data", listening_lesson));
+            return ResponseEntity.ok(Map.of("status", "success", "message", "Listening lessons retrieved successfully", "data", listening_lesson));
         } catch (Exception e) {
             return ResponseEntity.status(500).body(Map.of("status", "error", "message", e.getMessage()));
         }
