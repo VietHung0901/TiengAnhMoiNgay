@@ -1,14 +1,18 @@
 package Project.TiengAnhMoiNgay.config;
 
 import Project.TiengAnhMoiNgay.model.JWTTokenUtil;
+import Project.TiengAnhMoiNgay.services.CustomUserDetailsService;
 import io.jsonwebtoken.ExpiredJwtException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
@@ -20,9 +24,11 @@ import java.util.stream.Collectors;
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     private final JWTTokenUtil jwtTokenUtil;
+    private final CustomUserDetailsService customUserDetailsService;
 
-    public JwtAuthenticationFilter(JWTTokenUtil jwtTokenUtil) {
+    public JwtAuthenticationFilter(JWTTokenUtil jwtTokenUtil, @Qualifier("userDetailsService") UserDetailsService userDetailsService, CustomUserDetailsService customUserDetailsService) {
         this.jwtTokenUtil = jwtTokenUtil;
+        this.customUserDetailsService = customUserDetailsService;
     }
 
     @Override
@@ -45,16 +51,22 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 List<String> roles = jwtTokenUtil.extractRoles(token);
 
                 // Thêm vai trò vào SecurityContext
+//                if (username != null && roles != null) {
+//                    List<SimpleGrantedAuthority> authorities = roles.stream()
+//                            .map(SimpleGrantedAuthority::new)
+//                            .collect(Collectors.toList());
+//
+//                    UsernamePasswordAuthenticationToken authentication =
+//                            new UsernamePasswordAuthenticationToken(username, null, authorities);
+//                    SecurityContextHolder.getContext().setAuthentication(authentication);
+//                }
                 if (username != null && roles != null) {
-                    List<SimpleGrantedAuthority> authorities = roles.stream()
-                            .map(SimpleGrantedAuthority::new)
-                            .collect(Collectors.toList());
-
+                    UserDetails userDetails = customUserDetailsService.loadUserByUsername(username);
                     UsernamePasswordAuthenticationToken authentication =
-                            new UsernamePasswordAuthenticationToken(username, null, authorities);
-
+                            new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
                     SecurityContextHolder.getContext().setAuthentication(authentication);
                 }
+
             } catch (ExpiredJwtException e) {
                 // Xử lý khi token hết hạn
                 response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Token đã hết hạn");

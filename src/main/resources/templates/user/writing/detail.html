@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+
+    <title>Detail Writing Lesson</title>
+    <meta content="" name="description">
+    <meta content="" name="keywords">
+
+    <!-- Favicons -->
+    <link href="/assets/img/favicon.png" rel="icon">
+    <link href="/assets/img/apple-touch-icon.png" rel="apple-touch-icon">
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.gstatic.com" rel="preconnect">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i"
+          rel="stylesheet">
+
+    <!-- Vendor CSS Files -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <link href="/assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+
+
+    <!-- Template Main CSS File -->
+    <link href="/assets/css/style.css" rel="stylesheet">
+    <style>
+        .subtitles-container {
+            max-height: 300px; /* Fixed height for the scrollable area */
+            overflow-y: auto; /* Enable vertical scrolling */
+            border: 1px solid #dee2e6; /* Optional: Add border for visual clarity */
+            border-radius: 4px; /* Optional: Rounded corners */
+            padding: 10px; /* Optional: Add padding for better appearance */
+        }
+
+        .subtitles-list {
+            margin: 0;
+            padding: 0;
+        }
+
+        .subtitles-list .list-group-item {
+            cursor: pointer;
+            transition: background-color 0.3s; /* Smooth transition for highlight */
+        }
+
+        /* Custom scrollbar styling (optional, for modern browsers) */
+        .subtitles-container::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .subtitles-container::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+
+        .subtitles-container::-webkit-scrollbar-thumb {
+            background: #888;
+            border-radius: 4px;
+        }
+
+        .subtitles-container::-webkit-scrollbar-thumb:hover {
+            background: #555;
+        }
+    </style>
+</head>
+
+<body>
+
+<th:block th:replace="~{partial/user_header :: user_header}"></th:block>
+<th:block th:replace="~{partial/user_sidebar :: user_sidebar}"></th:block>
+
+<main id="main" class="main">
+    <div class="pagetitle">
+        <h1>Writing</h1>
+        <nav>
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item active"><a href="/view/user/writing/list/1">List</a></li>
+                <li class="breadcrumb-item active"><a id="detail-breadcrumb" href="#">Detail</a></li>
+            </ol>
+        </nav>
+    </div><!-- End Page Title -->
+
+    <th:block th:replace="~{partial/notify :: notify}"></th:block>
+    <th:block th:replace="~{partial/loading :: loading}"></th:block>
+    <th:block th:replace="~{partial/error :: error}"></th:block>
+
+    <section class="section dashboard">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Detail Writing Lesson</h5>
+
+                <div class="row">
+                    <div class="col-md-8">
+
+                        <!-- Content -->
+                        <div>
+                            <label class="form-label">Content</label>
+                            <div id="content"
+                                 style="border: 1px solid #ccc; padding: 10px; height: 284px; background: #f9f9f9; overflow: auto;">
+                                <!-- Nội dung bài viết từ file Word -->
+                            </div>
+                        </div>
+
+                        <!-- Answer -->
+                        <div>
+                            <label for="studentReply" class="form-label">Your Answer</label>
+                            <textarea id="studentReply" class="form-control" rows="5"
+                                      placeholder="Only English please! Write your answer here..." readonly>👉 Vui lòng chuyển bộ gõ sang tiếng Anh. Ô nhập này chỉ chấp nhận tiếng Anh.</textarea>
+                        </div>
+                    </div>
+
+                    <!-- Comment -->
+                    <div class="col-md-4">
+                        <div>
+                            <label for="comment" class="form-label">Comment</label>
+                            <textarea id="comment" class="form-control" rows="16" readonly
+                                      style="background-color: #f3f3f3;"
+                                      placeholder="Comment your answer here...">Sau mỗi câu trả lời, bạn sẽ nhận được một nhận xét tại đây.
+Khi đã hiểu nhận xét, hãy nhấn nút 'Accept' để chuyển sang câu tiếp theo.
+Bạn đã sẵn sàng chưa? Hãy nhấn 'Accept' để bắt đầu.
+                            </textarea>
+                        </div>
+                        <div class="d-flex justify-content-end align-items-center gap-3 mt-3">
+                            <!-- Biểu tượng loading -->
+                            <div id="comment-loading" class="d-none d-flex align-items-center">
+                                <div class="spinner-border text-primary me-2" role="status"
+                                     style="width: 1.2rem; height: 1.2rem;">
+                                    <span class="visually-hidden">Loading...</span>
+                                </div>
+                                <div class="small text-muted">Đang nhận xét câu trả lời...</div>
+                            </div>
+
+                            <button class="btn btn-success" id="accept">Accept</button>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+</main><!-- End #main -->
+
+<th:block th:replace="~{partial/user_footer :: user_footer}"></th:block>
+
+<a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i
+        class="bi bi-arrow-up-short"></i></a>
+
+<!-- Script for Writing -->
+<script type="module" th:src="@{/js/writing/detail-Load.js}"></script>
+
+<!-- Vendor JS Files -->
+<script src="/assets/vendor/apexcharts/apexcharts.min.js"></script>
+
+<!-- <script src="/assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script> -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+        crossorigin="anonymous"></script>
+
+<!-- Template Main JS File -->
+<script src="/assets/js/main.js"></script>
+<!-- Preview file word-->
+<script src="https://unpkg.com/mammoth/mammoth.browser.min.js"></script>
+</body>
+
+</html>

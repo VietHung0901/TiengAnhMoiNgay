@@ -106,7 +106,7 @@
                         <div>
                             <label for="studentReply" class="form-label">Your Answer</label>
                             <textarea id="studentReply" class="form-control" rows="5"
-                                      placeholder="Only English please! Write your answer here..." readonly></textarea>
+                                      placeholder="Only English please! Write your answer here..." readonly>👉 Vui lòng chuyển bộ gõ sang tiếng Anh. Ô nhập này chỉ chấp nhận tiếng Anh.</textarea>
                         </div>
                     </div>
 
@@ -121,11 +121,18 @@ Khi đã hiểu nhận xét, hãy nhấn nút 'Accept' để chuyển sang câu 
 Bạn đã sẵn sàng chưa? Hãy nhấn 'Accept' để bắt đầu.
                             </textarea>
                         </div>
-                        <div>
-                            <div class="text-end mt-3">
-                                <button class="btn btn-success" id="accept">Accept</button>
+                        <div class="d-flex justify-content-end align-items-center gap-3 mt-3">
+                            <!-- Biểu tượng loading -->
+                            <div id="comment-loading" class="d-none d-flex align-items-center">
+                                <div class="spinner-border text-primary me-2" role="status" style="width: 1.2rem; height: 1.2rem;">
+                                    <span class="visually-hidden">Loading...</span>
+                                </div>
+                                <div class="small text-muted">Đang nhận xét câu trả lời...</div>
                             </div>
+
+                            <button class="btn btn-success" id="accept">Accept</button>
                         </div>
+
                     </div>
                 </div>
             </div>

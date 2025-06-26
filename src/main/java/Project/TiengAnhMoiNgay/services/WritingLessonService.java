@@ -4,6 +4,7 @@ import Project.TiengAnhMoiNgay.entities.Level;
 import Project.TiengAnhMoiNgay.entities.Listening_lesson;
 import Project.TiengAnhMoiNgay.entities.Writing_lesson;
 import Project.TiengAnhMoiNgay.model.StringURL;
+import Project.TiengAnhMoiNgay.repositories.ILessonTypeRepository;
 import Project.TiengAnhMoiNgay.repositories.ILevelRepository;
 import Project.TiengAnhMoiNgay.repositories.IWritingLessonRepository;
 import lombok.RequiredArgsConstructor;
@@ -19,6 +20,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -27,6 +29,7 @@ public class WritingLessonService {
 
     private final IWritingLessonRepository writingLessonRepository;
     private final ILevelRepository levelRepository;
+    private final ILessonTypeRepository lessonTypeRepository;
 
     public Page<Writing_lesson> Pageable_WritingLessons(Pageable pageable, String status) {
         if (status == null)
@@ -67,6 +70,7 @@ public class WritingLessonService {
             Writing_lesson lesson = new Writing_lesson();
             lesson.setTitle(title);
             lesson.setFilePath(saveFile(file));
+            lesson.setCategory(lessonTypeRepository.getLessonTypeById(2L));
             if (levelId != null) {
                 Level level = levelRepository.findById(levelId)
                         .orElseThrow(() -> new RuntimeException("Level not found with ID: " + levelId));
@@ -77,5 +81,13 @@ public class WritingLessonService {
         } catch (Exception e) {
             throw new RuntimeException("Failed to create writing lesson", e);
         }
+    }
+
+    public long getTotalWriting() {
+        return writingLessonRepository.count();
+    }
+
+    public List<Writing_lesson> getLatestWritings() {
+        return writingLessonRepository.findTop5ByOrderByCreatedAtDesc();
     }
 }

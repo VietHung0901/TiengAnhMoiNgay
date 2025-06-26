@@ -1,8 +1,12 @@
 package Project.TiengAnhMoiNgay.controllers.api;
 
+import Project.TiengAnhMoiNgay.entities.LearningLog;
 import Project.TiengAnhMoiNgay.entities.Level;
 import Project.TiengAnhMoiNgay.entities.Listening_lesson;
+import Project.TiengAnhMoiNgay.entities.User;
 import Project.TiengAnhMoiNgay.model.StringURL;
+import Project.TiengAnhMoiNgay.repositories.ILearningLogRepository;
+import Project.TiengAnhMoiNgay.repositories.ILessonTypeRepository;
 import Project.TiengAnhMoiNgay.repositories.ILevelRepository;
 import Project.TiengAnhMoiNgay.repositories.IListeningLessonRepository;
 import Project.TiengAnhMoiNgay.request.Listening_LessonCreateAudio;
@@ -17,11 +21,13 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -35,6 +41,8 @@ public class ApiListening_LessonController {
     private final YoutubeSubtitleService ytService;
     private final ILevelRepository levelRepository;
     private final IListeningLessonRepository lessonRepo;
+    private final ILearningLogRepository learningLogRepository;
+    private final ILessonTypeRepository lessonTypeRepository;
 
     @GetMapping("/list/{pageNumber}")
     public ResponseEntity<?> listListeningLesson(@PathVariable("pageNumber") int pageNumber, @RequestParam(value = "status", required = false) String status) {
@@ -71,7 +79,7 @@ public class ApiListening_LessonController {
             Level level = levelRepository.findById(listening_lesson.getLevelId())
                     .orElseThrow(() -> new RuntimeException("Level not found with ID: " + listening_lesson.getLevelId()));
             // Tạo lesson với status là processing
-            Listening_lesson lesson = Listening_lesson.builder().title(title).level(level).youtubeUrl(youtubeUrl).status("processing").build();
+            Listening_lesson lesson = Listening_lesson.builder().title(title).level(level).youtubeUrl(youtubeUrl).status("processing").category(lessonTypeRepository.getLessonTypeById(1L)).build();
 
             lesson = lessonRepo.save(lesson);
 
@@ -90,7 +98,7 @@ public class ApiListening_LessonController {
             Level level = levelRepository.findById(listening_lesson.getLevelId())
                     .orElseThrow(() -> new RuntimeException("Level not found with ID: " + listening_lesson.getLevelId()));
             // Tạo lesson với status là processing
-            Listening_lesson lesson = Listening_lesson.builder().title(listening_lesson.getTitle()).level(level).status("processing").build();
+            Listening_lesson lesson = Listening_lesson.builder().title(listening_lesson.getTitle()).level(level).status("processing").category(lessonTypeRepository.getLessonTypeById(1L)).build();
             lesson = lessonRepo.save(lesson);
 
             // Gọi bất đồng bộ
@@ -103,12 +111,32 @@ public class ApiListening_LessonController {
     }
 
     @GetMapping("/details/{id}")
-    public ResponseEntity<?> detailListeningLesson(@PathVariable("id") Long listening_lessonId) {
+    public ResponseEntity<?> detailListeningLesson(@PathVariable("id") Long listening_lessonId,
+                                                   @AuthenticationPrincipal User user) {
         Optional<Listening_lesson> listening_lesson = lessonService.getListeningLessonById(listening_lessonId);
         try {
             if (listening_lesson.isEmpty()) {
                 return ResponseEntity.ok(Map.of("status", "error", "message", "This lesson not exists"));
             }
+
+            boolean isUser = user.getAuthorities().stream()
+                    .anyMatch(role -> role.getAuthority().equals("USER"));
+
+            boolean isRecentlyLogged = learningLogRepository.existsByUserIdAndLessonIdAndViewedAtAfter(
+                    user.getId(),
+                    listening_lessonId,
+                    LocalDateTime.now().minusMinutes(30)
+            );
+
+            if (isUser && !isRecentlyLogged) {
+                LearningLog log = new LearningLog();
+                log.setUser(user);
+                log.setLessonId(listening_lessonId);
+                log.setLessonType(lessonTypeRepository.getLessonTypeById(1L));
+                log.setViewedAt(LocalDateTime.now());
+                learningLogRepository.save(log);
+            }
+
             // Trả về phản hồi ngay cho client
             return ResponseEntity.ok(Map.of("status", "success", "message", "Listening lessons retrieved successfully", "data", listening_lesson));
         } catch (Exception e) {

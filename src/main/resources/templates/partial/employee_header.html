@@ -10,10 +10,10 @@
     </div><!-- End Logo -->
 
     <div class="search-bar">
-        <form class="search-form d-flex align-items-center" method="POST" action="#">
-            <input type="text" name="query" placeholder="Search" title="Enter search keyword">
-            <button type="submit" title="Search"><i class="bi bi-search"></i></button>
-        </form>
+        <div class="search-form d-flex align-items-center">
+            <input type="text" id="word-input" name="query" placeholder="Look up vocabulary" title="Enter search keyword">
+            <button type="submit" id="search-button" title="Search"><i class="bi bi-search"></i></button>
+        </div>
     </div><!-- End Search Bar -->
 
     <nav class="header-nav ms-auto">
@@ -241,4 +241,28 @@
             }
         });
     </script>
+    <!-- JS for Search -->
+    <script>
+        // Gắn sự kiện click cho nút tìm kiếm
+        document.getElementById("search-button").addEventListener("click", function () {
+            const word = document.getElementById("word-input").value.trim();
+            if (word) {
+                window.location.href = "/view/admin/dictionary/search?query=" + encodeURIComponent(word);
+            } else {
+                alert("Vui lòng nhập từ cần tra cứu.");
+            }
+        });
+
+        // Gắn sự kiện nhấn Enter trong ô input
+        document.getElementById("word-input").addEventListener("keypress", function (e) {
+            if (e.key === "Enter") {
+                const word = e.target.value.trim();
+                if (word) {
+                    window.location.href = "/view/admin/dictionary/search?query=" + encodeURIComponent(word);
+                } else {
+                    alert("Vui lòng nhập từ cần tra cứu.");
+                }
+            }
+        });
+    </script><!-- End JS for Search -->
 </header><!-- End Header -->

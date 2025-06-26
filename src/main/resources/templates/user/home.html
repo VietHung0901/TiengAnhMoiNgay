@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
 
-    <title>Dashboard</title>
+    <title>Home</title>
     <meta content="" name="description">
     <meta content="" name="keywords">
 
@@ -35,17 +35,72 @@
 
 <main id="main" class="main">
     <div class="pagetitle">
-        <h1>Dashboard</h1>
+        <h1>Home</h1>
         <nav>
             <ol class="breadcrumb">
-                <li class="breadcrumb-item active"><a href="/view/admin/dashboard">Dashboard</a></li>
+                <li class="breadcrumb-item active"><a href="/view/admin/dashboard">Home</a></li>
             </ol>
         </nav>
     </div><!-- End Page Title -->
 
-    <section class="section dashboard">
+    <section class="section home py-5">
+        <div class="container">
+            <div class="mb-5 text-center">
+                <h2 class="fw-bold">Chào mừng bạn trở lại!</h2>
+                <p class="text-muted">Hãy tiếp tục hành trình học tiếng Anh của bạn hôm nay.</p>
+            </div>
 
+            <div class="row g-4">
+                <!-- Listening -->
+                <div class="col-md-4">
+                    <a href="/view/user/listening/list/1" class="text-decoration-none">
+                        <div class="card card-hover h-100 shadow-sm border-0">
+                            <div class="card-body text-center">
+                                <i class="bi bi-headphones fs-1 text-success"></i>
+                                <h5 class="mt-3">Luyện Nghe</h5>
+                                <p class="text-muted">Luyện nghe với video và podcast chất lượng cao.</p>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+
+                <!-- Writing -->
+                <div class="col-md-4">
+                    <a href="/view/user/writing/list/1" class="text-decoration-none">
+                        <div class="card card-hover h-100 shadow-sm border-0">
+                            <div class="card-body text-center">
+                                <i class="bi bi-pencil-square fs-1 text-warning"></i>
+                                <h5 class="mt-3">Luyện Viết</h5>
+                                <p class="text-muted">Viết bài luận và nhận góp ý từ AI.</p>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+
+                <!-- Thống kê -->
+                <div class="col-md-4">
+                    <a href="/view/user/dashboard" class="text-decoration-none">
+                        <div class="card card-hover h-100 shadow-sm border-0">
+                            <div class="card-body text-center">
+                                <i class="bi bi-book fs-1 text-danger"></i>
+                                <h5 class="mt-3">Luyện Đọc</h5>
+                                <p class="text-muted">Theo dõi tiến độ học mỗi ngày của bạn.</p>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Tiếp tục học -->
+            <div class="mt-5">
+                <h4 class="mb-3">Bài học gần đây</h4>
+                <ul class="list-group" id="recentLessons">
+                    <!-- Dữ liệu sẽ được gán bằng JavaScript -->
+                </ul>
+            </div>
+        </div>
     </section>
+
 </main><!-- End #main -->
 
 <th:block th:replace="~{partial/user_footer :: user_footer}"></th:block>
@@ -64,6 +119,8 @@
 <!-- Template Main JS File -->
 <script src="/assets/js/main.js"></script>
 
+<!-- JS for user home -->
+<script src="/js/dashboard/user-home.js"></script>
 </body>
 
 </html>

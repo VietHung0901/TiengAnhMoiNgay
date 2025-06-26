@@ -42,8 +42,10 @@ document.addEventListener("DOMContentLoaded", function () {
 function fetchLessonData(id) {
     const baseUrl = window.location.origin;
     return fetch(`${baseUrl}/api/listening_lesson/details/${id}`, {
-        method: 'GET', headers: {
-            'Authorization': localStorage.getItem("token"), 'Content-Type': 'application/json'
+        method: 'GET',
+        headers: {
+            'Authorization': localStorage.getItem("token"),
+            'Content-Type': 'application/json'
         }
     })
         .then(response => {

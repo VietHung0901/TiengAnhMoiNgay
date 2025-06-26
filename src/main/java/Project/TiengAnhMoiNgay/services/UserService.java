@@ -19,7 +19,10 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.UUID;
 
 
@@ -52,6 +55,8 @@ public class UserService implements UserDetailsService {
     public void Save(@NotNull User user) {
         user.setPassword(new BCryptPasswordEncoder().encode(user.getPassword()));
         user.setProvider(Provider.LOCAL.value);
+        user.getRoles()
+                .add(roleRepository.findRoleById(Role.USER.value));
         userRepository.save(user);
     }
 
@@ -93,8 +98,25 @@ public class UserService implements UserDetailsService {
         user.setBirthday(userRegister.getBirthday());
         user.setStatus(0);
         Save(user);
-        setDefaultRole(user.getUsername());
+
         return "Success";
     }
 
+    public long getTotalUsers() {
+        return userRepository.count();
+    }
+
+    public long getNewUsersToday() {
+        return userRepository.countByCreatedAt(LocalDate.now());
+    }
+
+    public long getNewUsersThisWeek() {
+        LocalDate now = LocalDate.now();
+        LocalDate startOfWeek = now.minusDays(now.getDayOfWeek().getValue() - 1);
+        return userRepository.countByCreatedAtBetween(startOfWeek, now);
+    }
+
+    public List<User> getLatestUsers() {
+        return userRepository.findTop5ByOrderByCreatedAtDesc();
+    }
 }

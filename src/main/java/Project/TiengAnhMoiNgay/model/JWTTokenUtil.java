@@ -5,6 +5,7 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
@@ -19,7 +20,8 @@ import java.util.stream.Collectors;
 @Component
 public class JWTTokenUtil {
 
-    private final String SECRET_KEY = "MySuperSecureSecretKeyWithAtLeast32Characters!";
+    @Value("${jwt.secret_key}")
+    private String SECRET_KEY;
     private final UserService userService;
 
     // Tạo JWT token

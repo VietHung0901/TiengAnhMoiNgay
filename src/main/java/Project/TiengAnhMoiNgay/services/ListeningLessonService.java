@@ -1,10 +1,9 @@
 package Project.TiengAnhMoiNgay.services;
 
-import Project.TiengAnhMoiNgay.entities.Level;
 import Project.TiengAnhMoiNgay.entities.Listening_lesson;
 import Project.TiengAnhMoiNgay.entities.Subtitle_line;
+import Project.TiengAnhMoiNgay.entities.User;
 import Project.TiengAnhMoiNgay.model.StringURL;
-import Project.TiengAnhMoiNgay.repositories.ILevelRepository;
 import Project.TiengAnhMoiNgay.repositories.IListeningLessonRepository;
 import Project.TiengAnhMoiNgay.repositories.ISubtitleLineRepository;
 import lombok.RequiredArgsConstructor;
@@ -137,5 +136,13 @@ public class ListeningLessonService {
             return fileName.replaceFirst("(?i)\\.mp3$", "");
         }
         return fileName;
+    }
+
+    public long getTotalListening() {
+        return lessonRepo.count();
+    }
+
+    public List<Listening_lesson> getLatestListenings() {
+        return lessonRepo.findTop5ByOrderByCreatedAtDesc();
     }
 }

@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+
+    <title>Look up Vocabulary</title>
+    <meta content="" name="description">
+    <meta content="" name="keywords">
+
+    <!-- Favicons -->
+    <link href="/assets/img/favicon.png" rel="icon">
+    <link href="/assets/img/apple-touch-icon.png" rel="apple-touch-icon">
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.gstatic.com" rel="preconnect">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i"
+          rel="stylesheet">
+
+    <!-- Vendor CSS Files -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <link href="/assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+
+    <!-- Template Main CSS File -->
+    <link href="/assets/css/style.css" rel="stylesheet">
+</head>
+
+<body>
+
+<th:block th:replace="~{partial/employee_header :: employee_header}"></th:block>
+<th:block th:replace="~{partial/employee_sidebar :: employee_sidebar}"></th:block>
+
+<main id="main" class="main">
+
+    <th:block th:replace="~{partial/notify :: notify}"></th:block>
+    <th:block th:replace="~{partial/loading :: loading}"></th:block>
+
+    <section class="section vocabulary" id="vocabulary-section">
+        <div class="card">
+            <div class="card-body">
+                <!-- Từ vựng -->
+                <h1 id="vocab-word" class="card-title text-capitalize">Vocabulary</h1>
+                <h2 id="phonetic" class="text-capitalize"></h2>
+
+                <div id="loading-indicator" style="display: none; text-align: center; margin: 20px;">
+                    <span>🔄 Đang tải dữ liệu...</span>
+                </div>
+
+                <!-- Phiên âm & phát âm -->
+                <div id="phonetics" class="mb-3">
+                    <ul id="phonetic-list" class="list-unstyled"></ul>
+                </div>
+
+                <!-- Nghĩa của từ -->
+                <div id="meanings">
+                    <h5>Meanings</h5>
+                    <!-- Mỗi nghĩa sẽ được thêm vào đây -->
+                </div>
+
+                <!-- Nguồn tham khảo -->
+                <div id="source" class="mt-4">
+                    <small>Source: <a href="#" target="_blank" id="source-link">Link</a></small>
+                </div>
+            </div>
+        </div>
+    </section>
+
+</main><!-- End #main -->
+
+<th:block th:replace="~{partial/employee_footer :: employee_footer}"></th:block>
+
+<a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i
+        class="bi bi-arrow-up-short"></i></a>
+
+<!-- Vendor JS Files -->
+<script src="/assets/vendor/apexcharts/apexcharts.min.js"></script>
+
+<!-- <script src="/assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script> -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+        crossorigin="anonymous"></script>
+
+<!-- Template Main JS File -->
+<script src="/assets/js/main.js"></script>
+
+<!-- JS File For Search -->
+<script src="/js/dictionary/search.js"></script>
+</body>
+
+</html>

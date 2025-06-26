@@ -1,6 +1,5 @@
 package Project.TiengAnhMoiNgay.config;
 
-import Project.TiengAnhMoiNgay.services.OAuthService;
 import Project.TiengAnhMoiNgay.services.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -23,7 +22,6 @@ import javax.servlet.http.HttpServletResponse;
 @EnableMethodSecurity(securedEnabled = true, jsr250Enabled = true)
 @RequiredArgsConstructor
 public class SecurityConfig {
-    private final OAuthService oAuthService;
     private final UserService userService;
 
     @Bean
@@ -61,15 +59,19 @@ public class SecurityConfig {
 
                         // access role: USER/EMPLOYEE/MANAGE
                         .requestMatchers("/api/listening_lesson/list/**",
-                                        "/api/listening_lesson/detail/**",
+                                        "/api/listening_lesson/details/**",
                                         "/api/writing_lesson/list/**",
-                                        "/api/writing_lesson/detail/**",
-                                        "/writings/**")
+                                        "/api/writing_lesson/details/**",
+                                        "/writings/**",
+                                        "/api/writing_lesson/feedback",
+                                        "/api/translate",
+                                        "/api/dashboard/home")
                                         .hasAnyAuthority("USER", "EMPLOYEE", "MANAGER")
 
                         // access role: EMPLOYEE/MANAGE
                         .requestMatchers("/api/listening_lesson/create/**",
-                                        "/api/writing_lesson/create")
+                                        "/api/writing_lesson/create",
+                                        "/api/dashboard/admin")
                                         .hasAnyAuthority("EMPLOYEE", "MANAGER")
 
                         // authentication request

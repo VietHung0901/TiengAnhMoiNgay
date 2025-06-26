@@ -47,6 +47,19 @@ public class User implements UserDetails{
     @Column(name = "provider", length = 50)
     private String provider;
 
+    @Column(name = "created_at", updatable = false)
+    private LocalDate createdAt;
+
+    @PrePersist
+    public void prePersist() {
+        this.createdAt = LocalDate.now();
+    }
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    @ToString.Exclude
+    private Set<LearningLog> learningLogs = new HashSet<>();
+
+
     @ManyToMany(fetch=FetchType.EAGER)
     @JoinTable(name = "user_role",
             joinColumns = @JoinColumn(name = "user_id"),
