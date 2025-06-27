@@ -14,5 +14,7 @@ public class WebConfig implements WebMvcConfigurer {
                 .addResourceLocations("file:" + StringURL.dirSubtitles);
         registry.addResourceHandler("/writings/**")
                 .addResourceLocations("file:" + StringURL.dirFilePath);
+        registry.addResourceHandler("/readings/**")
+                .addResourceLocations("file:" + StringURL.dirFilePathReading);
     }
 }

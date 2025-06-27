@@ -13,9 +13,9 @@ document.addEventListener("DOMContentLoaded", function () {
             }
 
             // Cập nhật số liệu
-            document.getElementById("userCount").innerText = data.userCount;
-            document.getElementById("listeningCount").innerText = data.listeningCount;
-            document.getElementById("writingCount").innerText = data.writingCount;
+            document.getElementById("userCount").innerText = data.userCount ?? 0;
+            document.getElementById("listeningCount").innerText = data.listeningCount ?? 0;
+            document.getElementById("writingCount").innerText = data.writingCount ?? 0;
             document.getElementById("readingCount").innerText = data.readingCount ?? 0; // fallback nếu chưa có
 
             // Cập nhật danh sách người dùng mới
@@ -37,7 +37,10 @@ document.addEventListener("DOMContentLoaded", function () {
             latestTable.innerHTML = ""; // Xóa mẫu
 
             let index = 1;
-            const mergeContents = [...data.latestWritings, ...data.latestListenings];
+            const mergeContents = [...data.latestWritings, ...data.latestListenings, ...data.latestReadings];
+
+            // 🟡 Sắp xếp theo thời gian giảm dần (mới nhất trước)
+            mergeContents.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
 
             mergeContents.forEach(content => {
                 const tr = document.createElement("tr");

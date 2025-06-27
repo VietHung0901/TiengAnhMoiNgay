@@ -1,5 +1,5 @@
 # ==== App Basic Config ====
-spring.application.name=english_learning_app
+spring.application.name=TiengAnhMoiNgay
 
 # ==== Database Config ====
 spring.datasource.url=jdbc:mysql://localhost:3306/your_database_name

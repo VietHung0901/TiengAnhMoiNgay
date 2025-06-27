@@ -1,17 +1,13 @@
 package Project.TiengAnhMoiNgay.controllers.api;
 
-import Project.TiengAnhMoiNgay.entities.LearningLog;
-import Project.TiengAnhMoiNgay.entities.Listening_lesson;
-import Project.TiengAnhMoiNgay.entities.User;
-import Project.TiengAnhMoiNgay.entities.Writing_lesson;
+import Project.TiengAnhMoiNgay.entities.*;
 import Project.TiengAnhMoiNgay.repositories.ILearningLogRepository;
 import Project.TiengAnhMoiNgay.repositories.IListeningLessonRepository;
+import Project.TiengAnhMoiNgay.repositories.IReadingLessonRepository;
 import Project.TiengAnhMoiNgay.repositories.IWritingLessonRepository;
-import Project.TiengAnhMoiNgay.response.Listening_LessonDashboardGet;
-import Project.TiengAnhMoiNgay.response.Listening_LessonGet;
-import Project.TiengAnhMoiNgay.response.UserDashboardAminGet;
-import Project.TiengAnhMoiNgay.response.Writing_LessonDashboardGet;
+import Project.TiengAnhMoiNgay.response.*;
 import Project.TiengAnhMoiNgay.services.ListeningLessonService;
+import Project.TiengAnhMoiNgay.services.ReadingLessonService;
 import Project.TiengAnhMoiNgay.services.UserService;
 import Project.TiengAnhMoiNgay.services.WritingLessonService;
 import lombok.RequiredArgsConstructor;
@@ -37,6 +33,8 @@ public class ApiDashboardController {
     private final WritingLessonService writingLessonService;
     private final IWritingLessonRepository writingLessonRepository;
     private final ILearningLogRepository learningLogRepository;
+    private final ReadingLessonService readingLessonService;
+    private final IReadingLessonRepository readingLessonRepository;
 
     @GetMapping("/admin")
     public ResponseEntity<?> listListeningLesson() {
@@ -53,7 +51,11 @@ public class ApiDashboardController {
             List<Writing_lesson> listWritings = writingLessonService.getLatestWritings();
             List<Writing_LessonDashboardGet> latestWritings = listWritings.stream().map(writing -> Writing_LessonDashboardGet.builder().Id(writing.getId()).title(writing.getTitle()).createdAt(writing.getCreatedAt()).category(writing.getCategory().getTypeName()).build()).toList();
 
-            return ResponseEntity.ok(Map.of("status", "success", "message", "Dashboard admin successfully.", "userCount", userCount, "latestUsers", latestUsers, "writingCount", writingCount, "listeningCount", listeningCount, "latestListenings", latestListenings, "latestWritings", latestWritings));
+            long readingCount = readingLessonService.getTotalReading();
+            List<Reading_lesson> listReadings = readingLessonService.getLatestReadings();
+            List<Reading_LessonDashboardGet> latestReadings = listReadings.stream().map(reading -> Reading_LessonDashboardGet.builder().Id(reading.getId()).title(reading.getTitle()).createdAt(reading.getCreatedAt()).category(reading.getCategory().getTypeName()).build()).toList();
+
+            return ResponseEntity.ok(Map.of("status", "success", "message", "Dashboard admin successfully.", "userCount", userCount, "latestUsers", latestUsers, "writingCount", writingCount, "listeningCount", listeningCount, "latestListenings", latestListenings, "latestWritings", latestWritings, "readingCount", readingCount, "latestReadings", latestReadings));
         } catch (Exception e) {
             return ResponseEntity.status(500).body(Map.of("status", "error", "message", "An error occurred while fetching: " + e.getMessage()));
         }
@@ -117,14 +119,14 @@ public class ApiDashboardController {
                         item.put("lessonType", log.getLessonType().getTypeName());
 
                         Long lessonTypeId = log.getLessonType().getId();
-                        String title = "";
+                        String title = "None";
 
                         if (lessonTypeId == 1) {
                             title = listeningLessonRepository.getListening_lessonById(lessonId).getTitle();
                         } else if (lessonTypeId == 2) {
                             title = writingLessonRepository.getWriting_lessonById(lessonId).getTitle();
-                        } else {
-                            title = "reading";
+                        } else if (lessonTypeId == 3) {
+                            title = readingLessonRepository.getReading_lessonById(lessonId).getTitle();
                         }
 
                         item.put("title", title);

@@ -34,15 +34,6 @@
 <th:block th:replace="~{partial/employee_sidebar :: employee_sidebar}"></th:block>
 
 <main id="main" class="main">
-    <div class="pagetitle">
-        <h1>Dashboard</h1>
-        <nav>
-            <ol class="breadcrumb">
-                <li class="breadcrumb-item active"><a href="/view/admin/dashboard">Dashboard</a></li>
-            </ol>
-        </nav>
-    </div><!-- End Page Title -->
-
     <section class="section dashboard">
         <div class="row">
 
@@ -110,19 +101,21 @@
             <!-- Tổng số bài đọc -->
             <div class="col-lg-3 col-md-6">
                 <div class="card info-card">
-                    <div class="card-body">
-                        <h5 class="card-title">Bài đọc</h5>
-                        <div class="d-flex align-items-center">
-                            <div class="card-icon rounded-circle bg-danger text-white d-flex justify-content-center align-items-center"
-                                 style="width: 48px; height: 48px;">
-                                <i class="bi bi-book"></i>
-                            </div>
-                            <div class="ps-3">
-                                <h6 id="readingCount">0</h6>
-                                <span class="text-muted small pt-1">Đã thêm</span>
+                    <a href="/view/admin/reading/list/1">
+                        <div class="card-body">
+                            <h5 class="card-title">Bài đọc</h5>
+                            <div class="d-flex align-items-center">
+                                <div class="card-icon rounded-circle bg-danger text-white d-flex justify-content-center align-items-center"
+                                     style="width: 48px; height: 48px;">
+                                    <i class="bi bi-book"></i>
+                                </div>
+                                <div class="ps-3">
+                                    <h6 id="readingCount">0</h6>
+                                    <span class="text-muted small pt-1">Đã thêm</span>
+                                </div>
                             </div>
                         </div>
-                    </div>
+                    </a>
                 </div>
             </div>
 
@@ -224,7 +217,6 @@
         })
         .catch(err => console.error("Lỗi biểu đồ lượt học:", err));
 </script>
-
 
 
 <!-- Vendor JS Files -->

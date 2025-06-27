@@ -33,4 +33,4 @@ build/
 .vscode/
 
 # Không đẩy file cấu hình thật
-application.properties
+src/main/resources/application.properties

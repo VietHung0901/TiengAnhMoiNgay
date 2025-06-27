@@ -60,9 +60,11 @@ public class SecurityConfig {
                         // access role: USER/EMPLOYEE/MANAGE
                         .requestMatchers("/api/listening_lesson/list/**",
                                         "/api/listening_lesson/details/**",
+                                        "/api/reading_lesson/details/**",
                                         "/api/writing_lesson/list/**",
                                         "/api/writing_lesson/details/**",
                                         "/writings/**",
+                                        "/reading/**",
                                         "/api/writing_lesson/feedback",
                                         "/api/translate",
                                         "/api/dashboard/home")
@@ -71,6 +73,7 @@ public class SecurityConfig {
                         // access role: EMPLOYEE/MANAGE
                         .requestMatchers("/api/listening_lesson/create/**",
                                         "/api/writing_lesson/create",
+                                        "/api/reading_lesson/create",
                                         "/api/dashboard/admin")
                                         .hasAnyAuthority("EMPLOYEE", "MANAGER")
 

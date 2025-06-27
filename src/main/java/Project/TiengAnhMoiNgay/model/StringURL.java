@@ -18,4 +18,9 @@ public class StringURL {
 
     // Writing Lesson
     public static final String dirFilePath = "/Users/tranviethung/Documents/Project/TiengAnhMoiNgay/writings/";
+
+    // Reading Lesson
+    public static final String dirFilePathReading = "/Users/tranviethung/Documents/Project/TiengAnhMoiNgay/readings/";
+
+
 }

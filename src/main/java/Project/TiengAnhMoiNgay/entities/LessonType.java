@@ -28,6 +28,10 @@ public class LessonType {
     @ToString.Exclude
     private List<Listening_lesson> listListeningLesson;
 
+    @OneToMany(mappedBy = "category", cascade = CascadeType.ALL)
+    @ToString.Exclude
+    private List<Reading_lesson> listReadingLesson;
+
     @OneToMany(mappedBy = "lessonType", cascade = CascadeType.ALL)
     @ToString.Exclude
     private List<LearningLog> listLearningLog;

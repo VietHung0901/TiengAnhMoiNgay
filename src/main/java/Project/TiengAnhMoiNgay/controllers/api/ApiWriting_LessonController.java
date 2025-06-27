@@ -34,7 +34,7 @@ public class ApiWriting_LessonController {
     private final ILessonTypeRepository lessonTypeRepository;
 
     @GetMapping("/list/{pageNumber}")
-    public ResponseEntity<?> listListeningLesson(@PathVariable("pageNumber") int pageNumber, @RequestParam(value = "status", required = false) String status) {
+    public ResponseEntity<?> listWritingLesson(@PathVariable("pageNumber") int pageNumber, @RequestParam(value = "status", required = false) String status) {
         try {
             Pageable pageable = PageRequest.of(pageNumber - 1, 10);
             Page<Writing_lesson> pageLessons = writingLessonService.Pageable_WritingLessons(pageable, status);
