@@ -18,6 +18,7 @@ public class Subtitle_line {
     private Long Id;
 
     private String startTime;
+
     private String endTime;
 
     private String content;

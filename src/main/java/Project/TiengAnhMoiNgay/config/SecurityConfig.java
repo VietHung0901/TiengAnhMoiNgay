@@ -44,38 +44,44 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http, JwtAuthenticationFilter jwtAuthenticationFilter) throws Exception {
-        return http.csrf().disable().sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS) // Không dùng session
+        return http.csrf()
+                .disable().sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS) // Không dùng session
                 ).authorizeHttpRequests(auth -> auth
 
                         // No access required
                         .requestMatchers("/js/**",
-                                        "/assets/**",
-                                        "/assets1/**",
-                                        "/subtitles/**",
-                                        "/api/auth/**",
-                                        "/view/**",
-                                        "/")
-                                        .permitAll()
+                                "/assets/**",
+                                "/api/auth/**",
+                                "/",
+                                "/view/**",
+                                "/subtitles/**"
+                        )
+                        .permitAll()
 
                         // access role: USER/EMPLOYEE/MANAGE
-                        .requestMatchers("/api/listening_lesson/list/**",
-                                        "/api/listening_lesson/details/**",
-                                        "/api/reading_lesson/details/**",
-                                        "/api/writing_lesson/list/**",
-                                        "/api/writing_lesson/details/**",
-                                        "/writings/**",
-                                        "/reading/**",
-                                        "/api/writing_lesson/feedback",
-                                        "/api/translate",
-                                        "/api/dashboard/home")
-                                        .hasAnyAuthority("USER", "EMPLOYEE", "MANAGER")
+                        .requestMatchers(
+                                "/api/dashboard/home",
+                                "/api/listening_lesson/list/**",
+                                "/api/listening_lesson/details/**",
+                                "/api/writing_lesson/list/**",
+                                "/api/writing_lesson/details/**",
+                                "/api/writing_lesson/feedback",
+                                "/api/reading_lesson/list/**",
+                                "/api/reading_lesson/details/**",
+                                "/api/translate",
+                                "/writings/**",
+                                "/reading/**"
+                        )
+                        .hasAnyAuthority("USER", "EMPLOYEE", "MANAGER")
 
                         // access role: EMPLOYEE/MANAGE
-                        .requestMatchers("/api/listening_lesson/create/**",
-                                        "/api/writing_lesson/create",
-                                        "/api/reading_lesson/create",
-                                        "/api/dashboard/admin")
-                                        .hasAnyAuthority("EMPLOYEE", "MANAGER")
+                        .requestMatchers("/api/dashboard/learning-activity",
+                                "/api/dashboard/admin",
+                                "/api/listening_lesson/create/**",
+                                "/api/writing_lesson/create",
+                                "/api/reading_lesson/create"
+                        )
+                        .hasAnyAuthority("EMPLOYEE", "MANAGER")
 
                         // authentication request
                         .anyRequest().authenticated())

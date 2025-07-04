@@ -1,7 +1,6 @@
 package Project.TiengAnhMoiNgay.repositories;
 
 import Project.TiengAnhMoiNgay.entities.Listening_lesson;
-import Project.TiengAnhMoiNgay.entities.User;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;

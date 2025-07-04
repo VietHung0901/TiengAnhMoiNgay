@@ -14,12 +14,12 @@ public class DictionaryController {
     @GetMapping("/search")
     public String searchVocabulary(@RequestParam(name = "query", required = false) String query, Model model) {
         model.addAttribute("query", query); // truyền query xuống view (nếu bạn muốn sử dụng trong HTML/JS)
-        return "/employee/dictionary/search";
+        return "employee/dictionary/search";
     }
 
     @GetMapping("/translate")
     public String translate(@RequestParam(name = "query", required = false) String query, Model model) {
         model.addAttribute("query", query); // truyền query xuống view (nếu bạn muốn sử dụng trong HTML/JS)
-        return "/employee/dictionary/translate";
+        return "employee/dictionary/translate";
     }
 }

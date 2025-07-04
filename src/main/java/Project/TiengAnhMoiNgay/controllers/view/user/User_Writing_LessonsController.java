@@ -13,7 +13,7 @@ public class User_Writing_LessonsController {
 
     @GetMapping("/list/{pageNumber}")
     public String list(@PathVariable("pageNumber") int pageNumber) {
-        return "/user/writing/list";
+        return "user/writing/list";
     }
 
     @GetMapping("/create")
@@ -23,6 +23,6 @@ public class User_Writing_LessonsController {
 
     @GetMapping("/detail/{id}")
     public String detail(@PathVariable("id") Long writing_lessonId) {
-        return "/user/writing/detail";
+        return "user/writing/detail";
     }
 }

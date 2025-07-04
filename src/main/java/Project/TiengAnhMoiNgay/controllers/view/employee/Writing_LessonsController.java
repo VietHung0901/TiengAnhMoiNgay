@@ -13,16 +13,16 @@ public class Writing_LessonsController {
 
     @GetMapping("/list/{pageNumber}")
     public String list(@PathVariable("pageNumber") int pageNumber) {
-        return "/employee/writing/list";
+        return "employee/writing/list";
     }
 
     @GetMapping("/create")
     public String create() {
-        return "/employee/writing/create";
+        return "employee/writing/create";
     }
 
     @GetMapping("/detail/{id}")
     public String detail(@PathVariable("id") Long writing_lessonId) {
-        return "/employee/writing/detail";
+        return "employee/writing/detail";
     }
 }

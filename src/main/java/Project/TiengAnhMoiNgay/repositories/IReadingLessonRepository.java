@@ -9,6 +9,7 @@ import java.util.List;
 
 public interface IReadingLessonRepository extends JpaRepository<Reading_lesson, Long> {
     Page<Reading_lesson> findAll(Pageable pageable);
+
     Page<Reading_lesson> findByStatus(Pageable pageable, String status);
 
     long count();

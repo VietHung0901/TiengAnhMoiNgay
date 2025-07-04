@@ -1,6 +1,5 @@
 package Project.TiengAnhMoiNgay.repositories;
 
-import Project.TiengAnhMoiNgay.entities.LearningLog;
 import Project.TiengAnhMoiNgay.entities.LessonType;
 import org.springframework.data.jpa.repository.JpaRepository;
 

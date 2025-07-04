@@ -11,6 +11,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class UserController {
     @GetMapping("/home")
     public String dashboard() {
-        return "/user/home";
+        return "user/home";
     }
 }

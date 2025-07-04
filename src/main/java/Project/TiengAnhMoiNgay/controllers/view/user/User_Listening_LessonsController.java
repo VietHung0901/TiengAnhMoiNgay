@@ -13,11 +13,11 @@ public class User_Listening_LessonsController {
 
     @GetMapping("/list/{pageNumber}")
     public String list(@PathVariable("pageNumber") int pageNumber) {
-        return "/user/listening/list";
+        return "user/listening/list";
     }
 
     @GetMapping("/detail/{id}")
     public String detail(@PathVariable("id") Long listening_lessonId) {
-        return "/user/listening/detail";
+        return "user/listening/detail";
     }
 }

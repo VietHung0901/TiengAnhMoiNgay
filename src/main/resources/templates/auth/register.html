@@ -35,133 +35,91 @@
 
 <main>
     <div class="container">
+        <div class="container d-flex justify-content-center align-items-center min-vh-100">
+            <div class="register-container w-100" style="max-width: 900px;">
 
-        <div class="container d-flex justify-content-center">
-            <div class="register-container">
-                <!-- Toast Notification Container -->
+                <!-- Toast -->
                 <div class="position-fixed top-0 end-0 p-3" style="z-index: 9999">
-                    <div id="toastNotification" class="toast align-items-center text-white border-0" role="alert" aria-live="assertive" aria-atomic="true">
+                    <div id="toastNotification" class="toast align-items-center text-white bg-success border-0" role="alert" aria-live="assertive" aria-atomic="true">
                         <div class="d-flex">
-                            <div id="toastMessage" class="toast-body">
-                                <!-- Nội dung sẽ được JS chèn vào -->
-                            </div>
+                            <div id="toastMessage" class="toast-body"></div>
                             <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
                         </div>
                     </div>
                 </div>
 
-                <section class="section register min-vh-100 d-flex flex-column align-items-center justify-content-center py-4">
-                    <div class="container">
-                        <div class="row justify-content-center">
-                            <div class="col-lg-4 col-md-6 d-flex flex-column align-items-center justify-content-center">
-
-                                <div class="d-flex justify-content-center py-4">
-                                    <a href="#" class="logo d-flex align-items-center w-auto">
-                                        <img src="/assets/img/logo.png" alt="">
-                                        <span class="d-none d-lg-block">Tiếng anh mỗi ngày</span>
-                                    </a>
-                                </div><!-- End Logo -->
-
-                                <div class="card mb-3">
-
-                                    <div class="card-body">
-                                        <div class="pt-4 pb-2">
-                                            <h5 class="card-title text-center pb-0 fs-4">Create an Account</h5>
-                                            <p class="text-center small">Enter your personal details to create
-                                                account</p>
-                                        </div>
-
-                                        <form class="row g-3 needs-validation" novalidate>
-                                            <div class="col-12">
-                                                <label for="yourName" class="form-label">Your Name</label>
-                                                <input type="text" name="name" class="form-control" id="yourName"
-                                                       required>
-                                                <div class="invalid-feedback">Enter your name!</div>
-                                            </div>
-
-                                            <div class="col-12">
-                                                <label for="yourEmail" class="form-label">Your Email</label>
-                                                <div class="input-group has-validation">
-                                                    <span class="input-group-text" id="inputGroupPrepend">@</span>
-                                                    <input type="text" name="email" class="form-control" id="yourEmail"
-                                                           required>
-                                                    <div class="invalid-feedback">Enter a valid Email adddress!</div>
-                                                </div>
-                                            </div>
-
-                                            <div class="col-12">
-                                                <label for="yourPhone" class="form-label">Your Phone</label>
-                                                <input type="text" name="phone" class="form-control" id="yourPhone"
-                                                       required>
-                                                <div class="invalid-feedback">Enter your phone!</div>
-                                            </div>
-
-                                            <div class="col-12">
-                                                <label for="YourGender" class="form-label">Your Gender</label>
-                                                <select class="form-control" id="yourGender">
-                                                    <option value="true">Male</option>
-                                                    <option value="false">Female</option>
-                                                </select>
-                                            </div>
-
-                                            <div class="col-12">
-                                                <label for="YourBirthday" class="form-label">Your Birthday</label>
-                                                <input type="date" class="form-control" id="yourBirthday">
-                                            </div>
-
-                                            <div class="col-12">
-                                                <label for="yourPassword" class="form-label">Password</label>
-                                                <input type="password" name="password" class="form-control"
-                                                       id="yourPassword" required>
-                                                <div class="invalid-feedback">Enter your password!</div>
-                                            </div>
-
-                                            <div class="col-12">
-                                                <label for="yourPassword" class="form-label">Password</label>
-                                                <input type="password" name="password" class="form-control"
-                                                       id="yourConfirm-password" required>
-                                                <div class="invalid-feedback">Enter your confirm password!</div>
-                                            </div>
-
-                                            <div class="col-12">
-                                                <div class="form-check">
-                                                    <input class="form-check-input" name="terms" type="checkbox"
-                                                           value="" id="acceptTerms" required>
-                                                    <label class="form-check-label" for="acceptTerms">I agree and accept
-                                                        the <a href="#">terms and conditions</a></label>
-                                                    <div class="invalid-feedback">You must agree before submitting.
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="col-12">
-                                                <button class="btn btn-primary w-100" type="submit">Create Account
-                                                </button>
-                                            </div>
-                                            <div class="col-12">
-                                                <p class="small mb-0">Already have an account? <a
-                                                        href="/view/auth/login">Log in</a></p>
-                                            </div>
-                                        </form>
-
-                                    </div>
-                                </div>
-
-                                <div class="credits">
-                                    <!-- All the links in the footer should remain intact. -->
-                                    <!-- You can delete the links only if you purchased the pro version. -->
-                                    <!-- Licensing information: https://bootstrapmade.com/license/ -->
-                                    <!-- Purchase the pro version with working PHP/AJAX contact form: https://bootstrapmade.com/nice-admin-bootstrap-admin-html-template/ -->
-                                </div>
-                            </div>
-                        </div>
+                <!-- Form Register -->
+                <section class="section register py-4 px-3 px-md-5 bg-white shadow-lg rounded-4">
+                    <div class="text-center mb-4">
+                        <a href="/" class="logo d-flex align-items-center justify-content-center gap-2 mb-3">
+                            <img src="/assets/img/logo.png" alt="Logo" style="height: 40px;">
+                            <span class="fs-4 fw-bold text-primary">Tiếng Anh Mỗi Ngày</span>
+                        </a>
+                        <h5 class="fw-bold">Create an Account</h5>
+                        <p class="text-muted small">Enter your personal details to create account</p>
                     </div>
 
-                </section>
+                    <form class="row g-4 needs-validation" novalidate>
+                        <!-- Cột trái -->
+                        <div class="col-md-6">
+                            <label for="yourName" class="form-label">Your Name</label>
+                            <input type="text" name="name" class="form-control" id="yourName" required>
+                            <div class="invalid-feedback">Enter your name!</div>
 
+                            <label for="yourEmail" class="form-label mt-3">Your Email</label>
+                            <div class="input-group has-validation">
+                                <span class="input-group-text">@</span>
+                                <input type="text" name="email" class="form-control" id="yourEmail" required>
+                                <div class="invalid-feedback">Enter a valid Email address!</div>
+                            </div>
+
+                            <label for="yourPhone" class="form-label mt-3">Your Phone</label>
+                            <input type="text" name="phone" class="form-control" id="yourPhone" required>
+                            <div class="invalid-feedback">Enter your phone!</div>
+
+                            <label for="yourGender" class="form-label mt-3">Your Gender</label>
+                            <select class="form-control" id="yourGender">
+                                <option value="true">Male</option>
+                                <option value="false">Female</option>
+                            </select>
+
+                            <label for="yourBirthday" class="form-label mt-3">Your Birthday</label>
+                            <input type="date" class="form-control" id="yourBirthday">
+                        </div>
+
+                        <!-- Cột phải -->
+                        <div class="col-md-6">
+                            <label for="yourPassword" class="form-label">Password</label>
+                            <input type="password" name="password" class="form-control" id="yourPassword" required>
+                            <div class="invalid-feedback">Enter your password!</div>
+
+                            <label for="yourConfirm-password" class="form-label mt-3">Confirm Password</label>
+                            <input type="password" name="password" class="form-control" id="yourConfirm-password" required>
+                            <div class="invalid-feedback">Enter your confirm password!</div>
+
+                            <div class="form-check mt-4">
+                                <input class="form-check-input" name="terms" type="checkbox" value="" id="acceptTerms" required>
+                                <label class="form-check-label" for="acceptTerms">
+                                    I agree and accept the <a href="#">terms and conditions</a>
+                                </label>
+                                <div class="invalid-feedback">You must agree before submitting.</div>
+                            </div>
+
+                            <div class="d-grid mt-4">
+                                <button class="btn btn-primary" type="submit">Create Account</button>
+                            </div>
+
+                            <p class="small text-center mt-3 mb-0">
+                                Already have an account? <a href="/view/auth/login">Log in</a>
+                            </p>
+                        </div>
+                    </form>
+                </section>
             </div>
         </div>
     </div>
-</main><!-- End #main -->
+</main>
+
 
 <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i
         class="bi bi-arrow-up-short"></i></a>

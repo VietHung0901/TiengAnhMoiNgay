@@ -14,11 +14,11 @@ public class AuthController {
 
     @GetMapping("/login")
     public String login() {
-        return "/auth/login";
+        return "auth/login";
     }
 
     @GetMapping("/register")
     public String register(Model model) {
-        return "/auth/register";
+        return "auth/register";
     }
 }

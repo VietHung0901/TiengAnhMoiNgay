@@ -2,7 +2,6 @@ package Project.TiengAnhMoiNgay.services;
 
 import Project.TiengAnhMoiNgay.entities.Listening_lesson;
 import Project.TiengAnhMoiNgay.entities.Subtitle_line;
-import Project.TiengAnhMoiNgay.entities.User;
 import Project.TiengAnhMoiNgay.model.StringURL;
 import Project.TiengAnhMoiNgay.repositories.IListeningLessonRepository;
 import Project.TiengAnhMoiNgay.repositories.ISubtitleLineRepository;
