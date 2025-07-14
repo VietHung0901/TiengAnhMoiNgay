@@ -54,7 +54,8 @@ public class SecurityConfig {
                                 "/api/auth/**",
                                 "/",
                                 "/view/**",
-                                "/subtitles/**"
+                                "/subtitles/**",
+                                "/api/aurora-test/"
                         )
                         .permitAll()
 

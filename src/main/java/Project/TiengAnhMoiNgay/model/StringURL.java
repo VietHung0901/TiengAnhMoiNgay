@@ -21,6 +21,4 @@ public class StringURL {
 
     // Reading Lesson
     public static final String dirFilePathReading = "/Users/tranviethung/Documents/Project/TiengAnhMoiNgay/readings/";
-
-
 }
