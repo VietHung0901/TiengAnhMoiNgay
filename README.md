@@ -93,13 +93,3 @@ TiengAnhMoiNgay/
 
 - **User**: Regular learners who can access lessons and track their progress
 - **Employee**: Content creators and administrators who can manage lessons and user data
-
-## License
-
-This project is licensed under the [MIT License](LICENSE).
-
-## Acknowledgments
-
-- Spring Boot team for the excellent framework
-- AWS for translation services
-- All contributors to this project
