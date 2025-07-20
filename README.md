@@ -61,7 +61,7 @@ TiengAnhMoiNgay/
 
 1. Clone the repository:
    ```
-   git clone https://github.com/yourusername/TiengAnhMoiNgay.git
+   https://github.com/VietHung0901/TiengAnhMoiNgay/tree/DEV
    ```
 
 2. Configure the database in `application.properties`:
